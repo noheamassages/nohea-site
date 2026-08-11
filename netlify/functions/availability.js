@@ -23,6 +23,12 @@
 
 const CLEAN_BUFFER_MIN = 30;
 
+// Site API ID — not a secret (it's just an identifier, safe to commit),
+// hardcoded as a fallback in case the NETLIFY_SITE_ID env var doesn't
+// reach the function runtime for some reason. The env var, if present,
+// still wins.
+const FALLBACK_SITE_ID = '51333392-9df0-4d6d-b052-e8f7356491af';
+
 exports.handler = async (event) => {
   const headers = {
     'Content-Type': 'application/json',
@@ -35,32 +41,52 @@ exports.handler = async (event) => {
   }
 
   const token = process.env.NETLIFY_API_TOKEN;
-  const siteId = process.env.NETLIFY_SITE_ID;
+  const siteId = process.env.NETLIFY_SITE_ID || FALLBACK_SITE_ID;
 
   // Backend not configured yet — fail soft so the reservation form
   // keeps working (just without live availability filtering) rather
-  // than break for visitors.
+  // than break for visitors. Debug fields (missingToken, envKeys) are
+  // harmless to expose — no secret values, just which pieces are set.
   if (!token || !siteId) {
-    return { statusCode: 200, headers, body: JSON.stringify({ busy: [], configured: false }) };
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({
+        busy: [],
+        configured: false,
+        missingToken: !token,
+        missingSiteId: !siteId
+      })
+    };
   }
 
   try {
     const formsRes = await fetch(`https://api.netlify.com/api/v1/sites/${siteId}/forms`, {
       headers: { Authorization: `Bearer ${token}` }
     });
-    if (!formsRes.ok) throw new Error(`forms fetch failed: ${formsRes.status}`);
+    if (!formsRes.ok) {
+      const bodyText = await formsRes.text();
+      throw new Error(`forms fetch failed: ${formsRes.status} ${bodyText.slice(0, 200)}`);
+    }
     const forms = await formsRes.json();
     const form = forms.find((f) => f.name === 'reservation');
 
     if (!form) {
-      return { statusCode: 200, headers, body: JSON.stringify({ busy: [], configured: true }) };
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({ busy: [], configured: true, formsFound: forms.map((f) => f.name) })
+      };
     }
 
     const subsRes = await fetch(
       `https://api.netlify.com/api/v1/forms/${form.id}/submissions?per_page=100`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    if (!subsRes.ok) throw new Error(`submissions fetch failed: ${subsRes.status}`);
+    if (!subsRes.ok) {
+      const bodyText = await subsRes.text();
+      throw new Error(`submissions fetch failed: ${subsRes.status} ${bodyText.slice(0, 200)}`);
+    }
     const submissions = await subsRes.json();
 
     const busy = [];
@@ -73,12 +99,16 @@ exports.handler = async (event) => {
       busy.push({ start: range.start, end: range.end + CLEAN_BUFFER_MIN });
     }
 
-    return { statusCode: 200, headers, body: JSON.stringify({ busy, configured: true }) };
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({ busy, configured: true, submissionCount: submissions.length })
+    };
   } catch (err) {
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ busy: [], configured: true, error: true })
+      body: JSON.stringify({ busy: [], configured: true, error: true, errorMessage: String(err.message || err) })
     };
   }
 };
