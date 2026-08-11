@@ -533,7 +533,12 @@
               </select>
             </div>
             <div class="field">
-              <label for="r-slot">Heure souhaitée (lundi)</label>
+              <label for="r-date">Date souhaitée</label>
+              <input type="date" id="r-date" name="date" required>
+              <p class="field-hint">Uniquement le lundi&nbsp;: si vous choisissez un autre jour, la date est ramenée au lundi suivant.</p>
+            </div>
+            <div class="field field-full">
+              <label for="r-slot">Heure souhaitée</label>
               <select id="r-slot" name="creneau" required>
                 <option value="" disabled selected>Choisissez&hellip;</option>
               </select>
@@ -688,6 +693,29 @@
     if(serviceSelect && slotSelect){
       refreshSlots();
       serviceSelect.addEventListener('change', refreshSlots);
+    }
+
+    // reservation date — calendar picker restricted to Mondays
+    const dateInput = document.getElementById('r-date');
+    if(dateInput){
+      const toISODate = (d) => {
+        const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, '0'), day = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+      };
+      const nextMonday = (from) => {
+        const d = new Date(from.getFullYear(), from.getMonth(), from.getDate());
+        d.setDate(d.getDate() + ((8 - d.getDay()) % 7));
+        return d;
+      };
+      dateInput.min = toISODate(nextMonday(new Date()));
+      dateInput.addEventListener('change', () => {
+        if(!dateInput.value) return;
+        const [y, m, d] = dateInput.value.split('-').map(Number);
+        const chosen = new Date(y, m - 1, d);
+        if(chosen.getDay() !== 1){
+          dateInput.value = toISODate(nextMonday(chosen));
+        }
+      });
     }
 
     // gift card CTA — preselect the matching option in the reservation form
