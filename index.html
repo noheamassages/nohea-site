@@ -244,6 +244,33 @@
     font-style:italic; font-size:1.05rem; line-height:1.9; color:var(--brown);
   }
 
+  /* ---------- reservation ---------- */
+  .reservation{ background:var(--cream-2); }
+  .reservation-form{ max-width:640px; margin:0 auto; }
+  .hp-field{ position:absolute; left:-9999px; top:auto; }
+  .form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:22px 24px; }
+  .field-full{ grid-column:1 / -1; }
+  @media (max-width:720px){ .form-grid{ grid-template-columns:1fr; } }
+  .field label{
+    display:block; font-family:'Poppins', sans-serif; font-size:0.62rem; letter-spacing:0.16em;
+    text-transform:uppercase; color:var(--brown-light); margin-bottom:8px;
+  }
+  .field input, .field select, .field textarea{
+    width:100%; font-family:'Lora', serif; font-size:0.98rem; color:var(--brown-deep);
+    background:var(--cream); border:1px solid var(--line); border-radius:3px;
+    padding:12px 14px; transition:border-color .3s ease;
+  }
+  .field textarea{ resize:vertical; }
+  .field input:focus, .field select:focus, .field textarea:focus{ outline:none; border-color:var(--brown); }
+  .reservation-form .btn{ margin-top:32px; border:none; cursor:pointer; }
+  .reservation-form .btn[disabled]{ opacity:.6; cursor:default; }
+  .form-note{ margin-top:18px; font-size:0.85rem; color:var(--brown-light); line-height:1.7; }
+  .form-note a{ text-decoration:underline; }
+  .form-error{ margin-top:14px; font-family:'Poppins', sans-serif; font-size:0.78rem; color:#a5402c; }
+  .form-success{ text-align:center; max-width:480px; margin:0 auto; }
+  .form-success .dot-trail{ margin-bottom:22px; }
+  .form-success p{ font-style:italic; font-size:1.05rem; line-height:1.8; color:var(--brown); }
+
   /* ---------- contact ---------- */
   .contact-grid{
     display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;
@@ -321,6 +348,7 @@
     <span class="b-dot" data-sec="services"></span>
     <span class="b-dot" data-sec="about"></span>
     <span class="b-dot" data-sec="avis"></span>
+    <span class="b-dot" data-sec="reservation"></span>
     <span class="b-dot" data-sec="contact"></span>
     <span class="b-dot" data-sec="social"></span>
   </div>
@@ -334,7 +362,7 @@
         <a href="#about">À propos</a>
         <a href="#contact">Contact</a>
       </nav>
-      <a class="nav-cta" href="tel:0767387205">Rendez-vous</a>
+      <a class="nav-cta" href="#reservation">Rendez-vous</a>
     </div>
   </header>
 
@@ -348,7 +376,7 @@
         <p class="eyebrow">L'art de ralentir</p>
       </div>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="tel:0767387205">Prendre rendez-vous</a>
+        <a class="btn btn-primary" href="#reservation">Prendre rendez-vous</a>
         <a class="btn btn-ghost" href="#services">Voir les prestations</a>
       </div>
       <div class="scroll-cue" aria-hidden="true">
@@ -418,6 +446,56 @@
         <div class="avis-placeholder reveal">
           <div class="dot-trail" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
           <p>Cette section accueillera bientôt les retours de celles et ceux qui ont poussé la porte de Nohea. En attendant, n'hésitez pas à nous écrire ou à nous suivre sur Instagram pour découvrir l'expérience Nohea.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="reservation" id="reservation">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow light">Réservation</p>
+          <h2>Réservez votre parenthèse</h2>
+        </div>
+
+        <form name="reservation" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="reservation-form reveal" id="reservationForm">
+          <input type="hidden" name="form-name" value="reservation">
+          <p class="hp-field" aria-hidden="true">
+            <label>Ne pas remplir&nbsp;: <input name="bot-field" tabindex="-1" autocomplete="off"></label>
+          </p>
+          <div class="form-grid">
+            <div class="field">
+              <label for="r-name">Nom</label>
+              <input type="text" id="r-name" name="nom" required autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="r-contact">Téléphone ou e-mail</label>
+              <input type="text" id="r-contact" name="contact" required autocomplete="tel">
+            </div>
+            <div class="field">
+              <label for="r-service">Prestation souhaitée</label>
+              <select id="r-service" name="prestation" required>
+                <option value="" disabled selected>Choisissez&hellip;</option>
+                <option>L'Essentiel — 30 min — 45€</option>
+                <option>L'Équilibre — 60 min — 80€</option>
+                <option>L'Immersion — 90 min — 110€</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="r-slot">Créneau souhaité</label>
+              <input type="text" id="r-slot" name="creneau" placeholder="Ex. : jeudi après-midi" required>
+            </div>
+            <div class="field field-full">
+              <label for="r-message">Message (optionnel)</label>
+              <textarea id="r-message" name="message" rows="3"></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Envoyer la demande</button>
+          <p class="form-note">Votre demande sera confirmée par téléphone ou e-mail avant le rendez-vous. Vous pouvez aussi appeler directement au <a href="tel:0767387205">07 67 38 72 05</a>.</p>
+        </form>
+
+        <div class="form-success" id="formSuccess" hidden>
+          <div class="dot-trail" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+          <p>Merci&nbsp;! Votre demande a bien été envoyée — nous revenons vers vous rapidement pour confirmer votre rendez-vous.</p>
         </div>
       </div>
     </section>
@@ -509,7 +587,7 @@
     revealEls.forEach(el => io.observe(el));
 
     // breath rail active section
-    const sections = ['hero','philosophy','services','about','avis','contact','social'].map(id => document.getElementById(id));
+    const sections = ['hero','philosophy','services','about','avis','reservation','contact','social'].map(id => document.getElementById(id));
     const dots = document.querySelectorAll('.breath-rail .b-dot');
     const secIO = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -520,6 +598,37 @@
       });
     }, { threshold: 0.5 });
     sections.forEach(s => s && secIO.observe(s));
+
+    // reservation form — Netlify Forms, submitted via AJAX (no page reload)
+    const resForm = document.getElementById('reservationForm');
+    if(resForm){
+      resForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const submitBtn = resForm.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        const body = new URLSearchParams(new FormData(resForm)).toString();
+        fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body
+        })
+        .then((res) => {
+          if(!res.ok) throw new Error('network');
+          resForm.hidden = true;
+          document.getElementById('formSuccess').hidden = false;
+        })
+        .catch(() => {
+          submitBtn.disabled = false;
+          let err = resForm.querySelector('.form-error');
+          if(!err){
+            err = document.createElement('p');
+            err.className = 'form-error';
+            resForm.appendChild(err);
+          }
+          err.textContent = "Une erreur est survenue. Réessayez, ou appelez-nous directement au 07 67 38 72 05.";
+        });
+      });
+    }
   </script>
 </body>
 </html>
