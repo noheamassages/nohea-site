@@ -539,10 +539,10 @@
             </div>
             <div class="field field-full">
               <label for="r-slot">Heure souhaitée</label>
-              <select id="r-slot" name="creneau" required>
-                <option value="" disabled selected>Choisissez&hellip;</option>
+              <select id="r-slot" name="creneau" required disabled>
+                <option value="" disabled selected>Choisissez d'abord une date&hellip;</option>
               </select>
-              <p class="field-hint">Choisissez d'abord la prestation&nbsp;: les heures proposées s'ajustent à sa durée, avec 30 min de battement entre chaque rendez-vous pour préparer le salon.</p>
+              <p class="field-hint" id="slotHint">Les créneaux déjà réservés sont automatiquement retirés (30 min de battement inclus après chaque rendez-vous, pour préparer le salon).</p>
             </div>
             <div class="field field-full">
               <label for="r-message">Message (optionnel)</label>
@@ -664,41 +664,87 @@
     }, { threshold: 0.5 });
     sections.forEach(s => s && secIO.observe(s));
 
-    // reservation time slots — generated from the chosen prestation's
-    // duration, chained back-to-back with a 30-min cleaning buffer
-    // after each one, so no two proposed slots ever overlap or leave
-    // less than 30 min to prepare the salon before the next.
+    // reservation time slots — a dense 30-min grid from 14h to 18h,
+    // filtered down to what's actually free by calling the
+    // /availability function, which reads existing "reservation" form
+    // submissions for the chosen date. A slot is hidden only if it
+    // would overlap a real booking (already-booked end time + 30 min
+    // cleaning buffer) — the buffer is never applied to empty slots,
+    // only right after a genuine appointment.
     const OPEN_MIN = 14 * 60;
     const CLOSE_MIN = 18 * 60;
-    const CLEAN_BUFFER_MIN = 30;
+    const STEP_MIN = 30;
     const serviceSelect = document.getElementById('r-service');
     const slotSelect = document.getElementById('r-slot');
+    const dateInput = document.getElementById('r-date');
+    const slotHint = document.getElementById('slotHint');
+    const SLOT_HINT_DEFAULT = slotHint ? slotHint.textContent : '';
+    const SLOT_HINT_UNVERIFIED = "Disponibilité non vérifiée en temps réel pour le moment — nous confirmerons votre créneau par téléphone ou e-mail.";
 
     function formatTime(mins){
       const h = Math.floor(mins / 60), m = mins % 60;
       return m === 0 ? `${h}h` : `${h}h${String(m).padStart(2, '0')}`;
     }
 
-    function refreshSlots(){
+    function overlaps(startA, endA, startB, endB){
+      return startA < endB && endA > startB;
+    }
+
+    async function fetchBusy(date){
+      try{
+        const res = await fetch(`/.netlify/functions/availability?date=${encodeURIComponent(date)}`);
+        if(!res.ok) return { busy: [], ok: false };
+        const data = await res.json();
+        return { busy: Array.isArray(data.busy) ? data.busy : [], ok: !data.error };
+      } catch(err){
+        return { busy: [], ok: false };
+      }
+    }
+
+    async function refreshSlots(){
+      if(!serviceSelect || !slotSelect || !dateInput) return;
+
+      if(!dateInput.value){
+        slotSelect.disabled = true;
+        slotSelect.innerHTML = '<option value="" disabled selected>Choisissez d\'abord une date&hellip;</option>';
+        return;
+      }
+
       const opt = serviceSelect.options[serviceSelect.selectedIndex];
       const duration = (opt && parseInt(opt.dataset.duration, 10)) || 30;
       const previous = slotSelect.value;
+
+      slotSelect.disabled = true;
+      slotSelect.innerHTML = '<option value="" disabled selected>Vérification des disponibilités&hellip;</option>';
+      if(slotHint) slotHint.textContent = SLOT_HINT_DEFAULT;
+
+      const { busy, ok } = await fetchBusy(dateInput.value);
+
       const labels = [];
-      for(let t = OPEN_MIN; t + duration <= CLOSE_MIN; t += duration + CLEAN_BUFFER_MIN){
-        labels.push(`${formatTime(t)} à ${formatTime(t + duration)}`);
+      for(let t = OPEN_MIN; t + duration <= CLOSE_MIN; t += STEP_MIN){
+        const end = t + duration;
+        const isBusy = busy.some(b => overlaps(t, end, b.start, b.end));
+        if(!isBusy) labels.push(`${formatTime(t)} à ${formatTime(end)}`);
       }
-      slotSelect.innerHTML = '<option value="" disabled selected>Choisissez&hellip;</option>'
-        + labels.map(l => `<option>${l}</option>`).join('');
-      if(labels.includes(previous)) slotSelect.value = previous;
+
+      slotSelect.disabled = false;
+      if(labels.length === 0){
+        slotSelect.innerHTML = '<option value="" disabled selected>Plus aucun créneau ce jour — essayez un autre lundi</option>';
+      } else {
+        slotSelect.innerHTML = '<option value="" disabled selected>Choisissez&hellip;</option>'
+          + labels.map(l => `<option>${l}</option>`).join('');
+        if(labels.includes(previous)) slotSelect.value = previous;
+      }
+
+      if(!ok && slotHint) slotHint.textContent = SLOT_HINT_UNVERIFIED;
     }
 
-    if(serviceSelect && slotSelect){
+    if(serviceSelect && slotSelect && dateInput){
       refreshSlots();
       serviceSelect.addEventListener('change', refreshSlots);
     }
 
     // reservation date — calendar picker restricted to Mondays
-    const dateInput = document.getElementById('r-date');
     if(dateInput){
       const toISODate = (d) => {
         const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, '0'), day = String(d.getDate()).padStart(2, '0');
@@ -711,12 +757,14 @@
       };
       dateInput.min = toISODate(nextMonday(new Date()));
       dateInput.addEventListener('change', () => {
-        if(!dateInput.value) return;
-        const [y, m, d] = dateInput.value.split('-').map(Number);
-        const chosen = new Date(y, m - 1, d);
-        if(chosen.getDay() !== 1){
-          dateInput.value = toISODate(nextMonday(chosen));
+        if(dateInput.value){
+          const [y, m, d] = dateInput.value.split('-').map(Number);
+          const chosen = new Date(y, m - 1, d);
+          if(chosen.getDay() !== 1){
+            dateInput.value = toISODate(nextMonday(chosen));
+          }
         }
+        refreshSlots();
       });
     }
 
