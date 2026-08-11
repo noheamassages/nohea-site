@@ -122,3 +122,8 @@ function parseRange(str) {
   const end = parseInt(m[3], 10) * 60 + (m[4] ? parseInt(m[4], 10) : 0);
   return { start, end };
 }
+
+// Redeploy marker: 2026-08-11T13:13 — NETLIFY_API_TOKEN was set as a
+// "secret" variable and never reached the Functions runtime (only
+// NETLIFY_SITE_ID, non-secret, did). Re-set as a plain (non-secret)
+// variable to work around it.
