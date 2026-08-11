@@ -13,6 +13,10 @@
 //                        (User settings → Applications → New access token)
 //   NETLIFY_SITE_ID   — this site's API ID
 //                        (Site settings → General → Site details → Site ID)
+// Both are configured as of 2026-08-11. Netlify Forms itself also had
+// to be turned on for the site (Site configuration → Forms) — it was
+// off, which is why earlier form submissions never reached Netlify
+// regardless of the front-end code.
 //
 // Nothing here needs npm install / a build step — it only uses the
 // native `fetch` available in Netlify's Node 18+ function runtime.
