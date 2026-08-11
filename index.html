@@ -505,7 +505,7 @@
         <div class="section-head reveal">
           <p class="eyebrow light">Réservation</p>
           <h2>Réservez votre parenthèse</h2>
-          <p class="section-sub">Rendez-vous uniquement le lundi, de 9h à 18h.</p>
+          <p class="section-sub">Rendez-vous uniquement le lundi, de 14h à 18h.</p>
         </div>
 
         <form name="reservation" method="POST" action="/" target="reservation-frame" data-netlify="true" netlify-honeypot="bot-field" class="reservation-form reveal" id="reservationForm">
@@ -542,7 +542,7 @@
               <select id="r-slot" name="creneau" required>
                 <option value="" disabled selected>Choisissez&hellip;</option>
               </select>
-              <p class="field-hint">Choisissez d'abord la prestation&nbsp;: les heures proposées s'ajustent à sa durée, pour finir avant 18h.</p>
+              <p class="field-hint">Choisissez d'abord la prestation&nbsp;: les heures proposées s'ajustent à sa durée, avec 30 min de battement entre chaque rendez-vous pour préparer le salon.</p>
             </div>
             <div class="field field-full">
               <label for="r-message">Message (optionnel)</label>
@@ -604,7 +604,7 @@
               </span>
               <div>
                 <span class="c-label">Horaires</span>
-                <span class="c-value">Le lundi, de 9h à 18h, sur rendez-vous</span>
+                <span class="c-value">Le lundi, de 14h à 18h, sur rendez-vous</span>
               </div>
             </div>
           </div>
@@ -665,10 +665,12 @@
     sections.forEach(s => s && secIO.observe(s));
 
     // reservation time slots — generated from the chosen prestation's
-    // duration, so the appointment always finishes by closing time (18h)
-    const OPEN_MIN = 9 * 60;
+    // duration, chained back-to-back with a 30-min cleaning buffer
+    // after each one, so no two proposed slots ever overlap or leave
+    // less than 30 min to prepare the salon before the next.
+    const OPEN_MIN = 14 * 60;
     const CLOSE_MIN = 18 * 60;
-    const STEP_MIN = 30;
+    const CLEAN_BUFFER_MIN = 30;
     const serviceSelect = document.getElementById('r-service');
     const slotSelect = document.getElementById('r-slot');
 
@@ -682,7 +684,7 @@
       const duration = (opt && parseInt(opt.dataset.duration, 10)) || 30;
       const previous = slotSelect.value;
       const labels = [];
-      for(let t = OPEN_MIN; t + duration <= CLOSE_MIN; t += STEP_MIN){
+      for(let t = OPEN_MIN; t + duration <= CLOSE_MIN; t += duration + CLEAN_BUFFER_MIN){
         labels.push(`${formatTime(t)} à ${formatTime(t + duration)}`);
       }
       slotSelect.innerHTML = '<option value="" disabled selected>Choisissez&hellip;</option>'
