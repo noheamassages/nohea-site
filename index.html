@@ -227,6 +227,35 @@
   }
   .service-card .s-price sup{ font-size:1rem; margin-right:2px; }
 
+  /* ---------- gallery ---------- */
+  .gallery-carousel{ max-width:720px; margin:0 auto; }
+  .gallery-viewport{
+    overflow:hidden; border-radius:4px; border:1px solid var(--line);
+  }
+  .gallery-track{
+    display:flex; transition:transform .6s ease;
+  }
+  .gallery-slide{
+    flex:0 0 100%; aspect-ratio:4/3;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg, var(--cream), var(--cream-2));
+  }
+  .gallery-slide img{ width:100%; height:100%; object-fit:cover; }
+  .gallery-placeholder{
+    font-family:'Poppins', sans-serif; font-size:0.68rem; letter-spacing:0.16em;
+    text-transform:uppercase; color:var(--brown-light);
+  }
+  .gallery-dots{
+    display:flex; justify-content:center; gap:10px; margin-top:24px;
+  }
+  .g-dot{
+    width:7px; height:7px; border-radius:50%; background:var(--line);
+    border:none; padding:0; cursor:pointer;
+    transition:background .3s ease, transform .3s ease;
+  }
+  .g-dot.active{ background:var(--brown); transform:scale(1.3); }
+  @media (prefers-reduced-motion: reduce){ .gallery-track{ transition:none; } }
+
   /* ---------- about ---------- */
   .about{ text-align:center; }
   .about h2{
@@ -387,12 +416,13 @@
     <span class="b-dot active" data-sec="hero"></span>
     <span class="b-dot" data-sec="philosophy"></span>
     <span class="b-dot" data-sec="services"></span>
+    <span class="b-dot" data-sec="gallery"></span>
     <span class="b-dot" data-sec="about"></span>
-    <span class="b-dot" data-sec="avis"></span>
-    <span class="b-dot" data-sec="giftcards"></span>
     <span class="b-dot" data-sec="reservation"></span>
+    <span class="b-dot" data-sec="giftcards"></span>
     <span class="b-dot" data-sec="contact"></span>
     <span class="b-dot" data-sec="social"></span>
+    <span class="b-dot" data-sec="avis"></span>
   </div>
 
   <header class="site-nav" id="siteNav">
@@ -401,6 +431,7 @@
       <nav class="nav-links">
         <a href="#philosophy">L'approche</a>
         <a href="#services">Prestations</a>
+        <a href="#gallery">Galerie</a>
         <a href="#giftcards">Cadeaux</a>
         <a href="#about">À propos</a>
         <a href="#contact">Contact</a>
@@ -470,6 +501,39 @@
       </div>
     </section>
 
+    <section class="gallery" id="gallery">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow light">Galerie</p>
+          <h2>Un aperçu du lieu</h2>
+        </div>
+        <!-- Emplacements en attente des vraies photos (le local, les
+             soins, l'accueil...). Pour en ajouter une, remplacer le
+             contenu d'une case "gallery-slide" par une image
+             assets/gallery/nom-du-fichier.jpg -->
+        <div class="gallery-carousel reveal" id="galleryCarousel">
+          <div class="gallery-viewport">
+            <div class="gallery-track" id="galleryTrack">
+              <div class="gallery-slide"><span class="gallery-placeholder">Photo à venir</span></div>
+              <div class="gallery-slide"><span class="gallery-placeholder">Photo à venir</span></div>
+              <div class="gallery-slide"><span class="gallery-placeholder">Photo à venir</span></div>
+              <div class="gallery-slide"><span class="gallery-placeholder">Photo à venir</span></div>
+              <div class="gallery-slide"><span class="gallery-placeholder">Photo à venir</span></div>
+              <div class="gallery-slide"><span class="gallery-placeholder">Photo à venir</span></div>
+            </div>
+          </div>
+          <div class="gallery-dots" id="galleryDots">
+            <button class="g-dot active" data-slide="0" aria-label="Photo 1"></button>
+            <button class="g-dot" data-slide="1" aria-label="Photo 2"></button>
+            <button class="g-dot" data-slide="2" aria-label="Photo 3"></button>
+            <button class="g-dot" data-slide="3" aria-label="Photo 4"></button>
+            <button class="g-dot" data-slide="4" aria-label="Photo 5"></button>
+            <button class="g-dot" data-slide="5" aria-label="Photo 6"></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="about" id="about">
       <div class="wrap reveal">
         <p class="eyebrow light">À propos</p>
@@ -477,76 +541,6 @@
         <h2>Un espace pour ralentir, respirer et prendre soin de soi.</h2>
         <p>Je suis Gwenaëlle, praticienne en massage bien-être, et j'ai imaginé Nohea comme une véritable parenthèse dans le quotidien, à Ittenheim.</p>
         <a class="about-link" href="a-propos.html">Découvrir mon histoire &rarr;</a>
-      </div>
-    </section>
-
-    <section class="avis" id="avis">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <p class="eyebrow light">Avis clients</p>
-          <h2>Les premiers témoignages arrivent bientôt</h2>
-        </div>
-        <div class="avis-placeholder reveal">
-          <div class="dot-trail" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-          <p>Cette section accueillera bientôt les retours de celles et ceux qui ont poussé la porte de Nohea. En attendant, n'hésitez pas à nous écrire ou à nous suivre sur Instagram pour découvrir l'expérience Nohea.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="giftcards" id="giftcards">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <p class="eyebrow light">Bons cadeaux</p>
-          <h2>Offrez une parenthèse Nohea</h2>
-        </div>
-        <div class="giftcard-panel reveal">
-          <p>Envie de faire plaisir à quelqu'un que vous aimez&nbsp;? Offrez-lui un vrai moment de calme, à choisir parmi les trois formules Nohea.</p>
-          <ul class="giftcard-list">
-            <li><span>L'Essentiel — 30 min</span><span>45€</span></li>
-            <li><span>L'Équilibre — 60 min</span><span>80€</span></li>
-            <li><span>L'Immersion — 90 min</span><span>110€</span></li>
-          </ul>
-          <p class="giftcard-note">Le bon cadeau est envoyé par e-mail ou remis en main propre&nbsp;; le règlement se fait directement avec Nohea. Il n'est pas lié à un créneau&nbsp;: la personne qui le reçoit choisit sa date plus tard, via la réservation.</p>
-
-          <form name="bon-cadeau" method="POST" action="/" target="giftcard-frame" data-netlify="true" netlify-honeypot="bot-field-gift" class="giftcard-form" id="giftcardForm">
-            <input type="hidden" name="form-name" value="bon-cadeau">
-            <p class="hp-field" aria-hidden="true">
-              <label>Ne pas remplir&nbsp;: <input name="bot-field-gift" tabindex="-1" autocomplete="off"></label>
-            </p>
-            <div class="form-grid">
-              <div class="field">
-                <label for="g-name">Votre nom</label>
-                <input type="text" id="g-name" name="nom" required autocomplete="name">
-              </div>
-              <div class="field">
-                <label for="g-contact">Téléphone ou e-mail</label>
-                <input type="text" id="g-contact" name="contact" required autocomplete="tel">
-              </div>
-              <div class="field field-full">
-                <label for="g-formule">Formule souhaitée</label>
-                <select id="g-formule" name="formule" required>
-                  <option value="" disabled selected>Choisissez&hellip;</option>
-                  <option>L'Essentiel — 30 min — 45€</option>
-                  <option>L'Équilibre — 60 min — 80€</option>
-                  <option>L'Immersion — 90 min — 110€</option>
-                  <option>Je ne sais pas encore</option>
-                </select>
-              </div>
-              <div class="field field-full">
-                <label for="g-message">Message (optionnel)</label>
-                <textarea id="g-message" name="message" rows="3" placeholder="Nom de la personne à qui offrir le bon, occasion, etc."></textarea>
-              </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Demander ce bon cadeau</button>
-          </form>
-
-          <div class="form-success" id="giftcardSuccess" hidden>
-            <div class="dot-trail" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-            <p>Merci&nbsp;! Votre demande de bon cadeau a bien été envoyée — nous revenons vers vous rapidement.</p>
-          </div>
-
-          <iframe name="giftcard-frame" id="giftcardFrame" title="Envoi du formulaire de bon cadeau" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;" aria-hidden="true"></iframe>
-        </div>
       </div>
     </section>
 
@@ -608,6 +602,63 @@
         </div>
 
         <iframe name="reservation-frame" id="reservationFrame" title="Envoi du formulaire de réservation" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;" aria-hidden="true"></iframe>
+      </div>
+    </section>
+
+    <section class="giftcards" id="giftcards">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow light">Bons cadeaux</p>
+          <h2>Offrez une parenthèse Nohea</h2>
+        </div>
+        <div class="giftcard-panel reveal">
+          <p>Envie de faire plaisir à quelqu'un que vous aimez&nbsp;? Offrez-lui un vrai moment de calme, à choisir parmi les trois formules Nohea.</p>
+          <ul class="giftcard-list">
+            <li><span>L'Essentiel — 30 min</span><span>45€</span></li>
+            <li><span>L'Équilibre — 60 min</span><span>80€</span></li>
+            <li><span>L'Immersion — 90 min</span><span>110€</span></li>
+          </ul>
+          <p class="giftcard-note">Le bon cadeau est envoyé par e-mail ou remis en main propre&nbsp;; le règlement se fait directement avec Nohea. Il n'est pas lié à un créneau&nbsp;: la personne qui le reçoit choisit sa date plus tard, via la réservation.</p>
+
+          <form name="bon-cadeau" method="POST" action="/" target="giftcard-frame" data-netlify="true" netlify-honeypot="bot-field-gift" class="giftcard-form" id="giftcardForm">
+            <input type="hidden" name="form-name" value="bon-cadeau">
+            <p class="hp-field" aria-hidden="true">
+              <label>Ne pas remplir&nbsp;: <input name="bot-field-gift" tabindex="-1" autocomplete="off"></label>
+            </p>
+            <div class="form-grid">
+              <div class="field">
+                <label for="g-name">Votre nom</label>
+                <input type="text" id="g-name" name="nom" required autocomplete="name">
+              </div>
+              <div class="field">
+                <label for="g-contact">Téléphone ou e-mail</label>
+                <input type="text" id="g-contact" name="contact" required autocomplete="tel">
+              </div>
+              <div class="field field-full">
+                <label for="g-formule">Formule souhaitée</label>
+                <select id="g-formule" name="formule" required>
+                  <option value="" disabled selected>Choisissez&hellip;</option>
+                  <option>L'Essentiel — 30 min — 45€</option>
+                  <option>L'Équilibre — 60 min — 80€</option>
+                  <option>L'Immersion — 90 min — 110€</option>
+                  <option>Je ne sais pas encore</option>
+                </select>
+              </div>
+              <div class="field field-full">
+                <label for="g-message">Message (optionnel)</label>
+                <textarea id="g-message" name="message" rows="3" placeholder="Nom de la personne à qui offrir le bon, occasion, etc."></textarea>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Demander ce bon cadeau</button>
+          </form>
+
+          <div class="form-success" id="giftcardSuccess" hidden>
+            <div class="dot-trail" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+            <p>Merci&nbsp;! Votre demande de bon cadeau a bien été envoyée — nous revenons vers vous rapidement.</p>
+          </div>
+
+          <iframe name="giftcard-frame" id="giftcardFrame" title="Envoi du formulaire de bon cadeau" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;" aria-hidden="true"></iframe>
+        </div>
       </div>
     </section>
 
@@ -674,6 +725,19 @@
         </div>
       </div>
     </section>
+
+    <section class="avis" id="avis">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow light">Avis clients</p>
+          <h2>Les premiers témoignages arrivent bientôt</h2>
+        </div>
+        <div class="avis-placeholder reveal">
+          <div class="dot-trail" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+          <p>Cette section accueillera bientôt les retours de celles et ceux qui ont poussé la porte de Nohea. En attendant, n'hésitez pas à nous écrire ou à nous suivre sur Instagram pour découvrir l'expérience Nohea.</p>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer>
@@ -701,7 +765,7 @@
     revealEls.forEach(el => io.observe(el));
 
     // breath rail active section
-    const sections = ['hero','philosophy','services','about','avis','giftcards','reservation','contact','social'].map(id => document.getElementById(id));
+    const sections = ['hero','philosophy','services','gallery','about','reservation','giftcards','contact','social','avis'].map(id => document.getElementById(id));
     const dots = document.querySelectorAll('.breath-rail .b-dot');
     const secIO = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -712,6 +776,38 @@
       });
     }, { threshold: 0.5 });
     sections.forEach(s => s && secIO.observe(s));
+
+    // gallery — small auto-advancing carousel, pauses on hover/focus,
+    // respects prefers-reduced-motion
+    const galleryCarousel = document.getElementById('galleryCarousel');
+    const galleryTrack = document.getElementById('galleryTrack');
+    const galleryDotsWrap = document.getElementById('galleryDots');
+    if(galleryCarousel && galleryTrack && galleryDotsWrap){
+      const gSlides = galleryTrack.children.length;
+      const gDots = galleryDotsWrap.querySelectorAll('.g-dot');
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let gCurrent = 0, gTimer;
+
+      function goToSlide(i){
+        gCurrent = (i + gSlides) % gSlides;
+        galleryTrack.style.transform = `translateX(-${gCurrent * 100}%)`;
+        gDots.forEach((d, idx) => d.classList.toggle('active', idx === gCurrent));
+      }
+      gDots.forEach((d, idx) => d.addEventListener('click', () => { goToSlide(idx); restartAuto(); }));
+
+      function startAuto(){
+        if(prefersReduced) return;
+        gTimer = setInterval(() => goToSlide(gCurrent + 1), 4500);
+      }
+      function stopAuto(){ clearInterval(gTimer); }
+      function restartAuto(){ stopAuto(); startAuto(); }
+
+      startAuto();
+      galleryCarousel.addEventListener('mouseenter', stopAuto);
+      galleryCarousel.addEventListener('mouseleave', startAuto);
+      galleryCarousel.addEventListener('focusin', stopAuto);
+      galleryCarousel.addEventListener('focusout', startAuto);
+    }
 
     // reservation time slots — a dense 30-min grid from 14h to 18h,
     // filtered down to what's actually free by calling the
