@@ -284,6 +284,7 @@
   }
   .field textarea{ resize:vertical; }
   .field input:focus, .field select:focus, .field textarea:focus{ outline:none; border-color:var(--brown); }
+  .field-hint{ margin-top:8px; font-size:0.76rem; color:var(--brown-light); line-height:1.6; }
   .reservation-form .btn{ margin-top:32px; border:none; cursor:pointer; }
   .reservation-form .btn[disabled]{ opacity:.6; cursor:default; }
   .form-note{ margin-top:18px; font-size:0.85rem; color:var(--brown-light); line-height:1.7; }
@@ -525,27 +526,18 @@
               <label for="r-service">Prestation souhaitée</label>
               <select id="r-service" name="prestation" required>
                 <option value="" disabled selected>Choisissez&hellip;</option>
-                <option>L'Essentiel — 30 min — 45€</option>
-                <option>L'Équilibre — 60 min — 80€</option>
-                <option>L'Immersion — 90 min — 110€</option>
-                <option>Bon cadeau — à offrir</option>
+                <option data-duration="30">L'Essentiel — 30 min — 45€</option>
+                <option data-duration="60">L'Équilibre — 60 min — 80€</option>
+                <option data-duration="90">L'Immersion — 90 min — 110€</option>
+                <option data-duration="30">Bon cadeau — à offrir</option>
               </select>
             </div>
             <div class="field">
               <label for="r-slot">Heure souhaitée (lundi)</label>
               <select id="r-slot" name="creneau" required>
                 <option value="" disabled selected>Choisissez&hellip;</option>
-                <option>9h</option>
-                <option>10h</option>
-                <option>11h</option>
-                <option>12h</option>
-                <option>13h</option>
-                <option>14h</option>
-                <option>15h</option>
-                <option>16h</option>
-                <option>17h</option>
-                <option>18h</option>
               </select>
+              <p class="field-hint">Choisissez d'abord la prestation&nbsp;: les heures proposées s'ajustent à sa durée, pour finir avant 18h.</p>
             </div>
             <div class="field field-full">
               <label for="r-message">Message (optionnel)</label>
@@ -667,12 +659,45 @@
     }, { threshold: 0.5 });
     sections.forEach(s => s && secIO.observe(s));
 
+    // reservation time slots — generated from the chosen prestation's
+    // duration, so the appointment always finishes by closing time (18h)
+    const OPEN_MIN = 9 * 60;
+    const CLOSE_MIN = 18 * 60;
+    const STEP_MIN = 30;
+    const serviceSelect = document.getElementById('r-service');
+    const slotSelect = document.getElementById('r-slot');
+
+    function formatSlot(mins){
+      const h = Math.floor(mins / 60), m = mins % 60;
+      return m === 0 ? `${h}h` : `${h}h${String(m).padStart(2, '0')}`;
+    }
+
+    function refreshSlots(){
+      const opt = serviceSelect.options[serviceSelect.selectedIndex];
+      const duration = (opt && parseInt(opt.dataset.duration, 10)) || 30;
+      const previous = slotSelect.value;
+      const labels = [];
+      for(let t = OPEN_MIN; t + duration <= CLOSE_MIN; t += STEP_MIN){
+        labels.push(formatSlot(t));
+      }
+      slotSelect.innerHTML = '<option value="" disabled selected>Choisissez&hellip;</option>'
+        + labels.map(l => `<option>${l}</option>`).join('');
+      if(labels.includes(previous)) slotSelect.value = previous;
+    }
+
+    if(serviceSelect && slotSelect){
+      refreshSlots();
+      serviceSelect.addEventListener('change', refreshSlots);
+    }
+
     // gift card CTA — preselect the matching option in the reservation form
     const giftCta = document.getElementById('giftCta');
     if(giftCta){
       giftCta.addEventListener('click', () => {
-        const sel = document.getElementById('r-service');
-        if(sel) sel.value = 'Bon cadeau — à offrir';
+        if(serviceSelect){
+          serviceSelect.value = 'Bon cadeau — à offrir';
+          serviceSelect.dispatchEvent(new Event('change'));
+        }
       });
     }
 
