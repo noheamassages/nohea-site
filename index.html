@@ -667,7 +667,7 @@
     const serviceSelect = document.getElementById('r-service');
     const slotSelect = document.getElementById('r-slot');
 
-    function formatSlot(mins){
+    function formatTime(mins){
       const h = Math.floor(mins / 60), m = mins % 60;
       return m === 0 ? `${h}h` : `${h}h${String(m).padStart(2, '0')}`;
     }
@@ -678,7 +678,7 @@
       const previous = slotSelect.value;
       const labels = [];
       for(let t = OPEN_MIN; t + duration <= CLOSE_MIN; t += STEP_MIN){
-        labels.push(formatSlot(t));
+        labels.push(`${formatTime(t)} à ${formatTime(t + duration)}`);
       }
       slotSelect.innerHTML = '<option value="" disabled selected>Choisissez&hellip;</option>'
         + labels.map(l => `<option>${l}</option>`).join('');
