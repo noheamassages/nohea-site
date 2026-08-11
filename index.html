@@ -195,6 +195,9 @@
     font-size:clamp(1.5rem, 2.6vw, 2rem); font-weight:400; font-style:italic; margin-top:14px;
     color:var(--brown-deep);
   }
+  .section-head .section-sub{
+    font-size:0.92rem; color:var(--brown-light); margin-top:14px;
+  }
   .service-grid{
     display:grid; grid-template-columns:repeat(3, 1fr); gap:1px;
     background:var(--line);
@@ -501,9 +504,10 @@
         <div class="section-head reveal">
           <p class="eyebrow light">Réservation</p>
           <h2>Réservez votre parenthèse</h2>
+          <p class="section-sub">Rendez-vous uniquement le lundi, de 9h à 18h.</p>
         </div>
 
-        <form name="reservation" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="reservation-form reveal" id="reservationForm">
+        <form name="reservation" method="POST" action="/" target="reservation-frame" data-netlify="true" netlify-honeypot="bot-field" class="reservation-form reveal" id="reservationForm">
           <input type="hidden" name="form-name" value="reservation">
           <p class="hp-field" aria-hidden="true">
             <label>Ne pas remplir&nbsp;: <input name="bot-field" tabindex="-1" autocomplete="off"></label>
@@ -528,8 +532,20 @@
               </select>
             </div>
             <div class="field">
-              <label for="r-slot">Créneau souhaité</label>
-              <input type="text" id="r-slot" name="creneau" placeholder="Ex. : jeudi après-midi" required>
+              <label for="r-slot">Heure souhaitée (lundi)</label>
+              <select id="r-slot" name="creneau" required>
+                <option value="" disabled selected>Choisissez&hellip;</option>
+                <option>9h</option>
+                <option>10h</option>
+                <option>11h</option>
+                <option>12h</option>
+                <option>13h</option>
+                <option>14h</option>
+                <option>15h</option>
+                <option>16h</option>
+                <option>17h</option>
+                <option>18h</option>
+              </select>
             </div>
             <div class="field field-full">
               <label for="r-message">Message (optionnel)</label>
@@ -544,6 +560,8 @@
           <div class="dot-trail" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
           <p>Merci&nbsp;! Votre demande a bien été envoyée — nous revenons vers vous rapidement pour confirmer votre rendez-vous.</p>
         </div>
+
+        <iframe name="reservation-frame" id="reservationFrame" title="Envoi du formulaire de réservation" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;" aria-hidden="true"></iframe>
       </div>
     </section>
 
@@ -589,7 +607,7 @@
               </span>
               <div>
                 <span class="c-label">Horaires</span>
-                <span class="c-value">Sur rendez-vous uniquement</span>
+                <span class="c-value">Le lundi, de 9h à 18h, sur rendez-vous</span>
               </div>
             </div>
           </div>
@@ -658,25 +676,18 @@
       });
     }
 
-    // reservation form — Netlify Forms, submitted via AJAX (no page reload)
+    // reservation form — Netlify Forms, submitted through a hidden iframe
+    // (no page reload; more robust than fetch() against cross-origin
+    // redirects some custom domains trigger — e.g. apex ↔ www — which
+    // can make fetch() fail even when the submission itself would succeed)
     const resForm = document.getElementById('reservationForm');
-    if(resForm){
-      resForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+    const resFrame = document.getElementById('reservationFrame');
+    if(resForm && resFrame){
+      resForm.addEventListener('submit', () => {
         const submitBtn = resForm.querySelector('button[type="submit"]');
         submitBtn.disabled = true;
-        const body = new URLSearchParams(new FormData(resForm)).toString();
-        fetch('/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body
-        })
-        .then((res) => {
-          if(!res.ok) throw new Error('network');
-          resForm.hidden = true;
-          document.getElementById('formSuccess').hidden = false;
-        })
-        .catch(() => {
+
+        const showError = (msg) => {
           submitBtn.disabled = false;
           let err = resForm.querySelector('.form-error');
           if(!err){
@@ -684,8 +695,21 @@
             err.className = 'form-error';
             resForm.appendChild(err);
           }
-          err.textContent = "Une erreur est survenue. Réessayez, ou appelez-nous directement au 07 67 38 72 05.";
-        });
+          err.textContent = msg;
+        };
+
+        const timeoutId = setTimeout(() => {
+          showError("L'envoi prend plus de temps que prévu. Réessayez, ou appelez-nous directement au 07 67 38 72 05.");
+        }, 10000);
+
+        resFrame.addEventListener('load', function onLoad(){
+          resFrame.removeEventListener('load', onLoad);
+          clearTimeout(timeoutId);
+          resForm.hidden = true;
+          document.getElementById('formSuccess').hidden = false;
+        }, { once: true });
+        // form submission proceeds natively (no preventDefault) — the
+        // browser posts it into the hidden iframe above.
       });
     }
   </script>
