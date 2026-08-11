@@ -273,6 +273,10 @@
   .giftcard-list li + li{ border-top:1px solid var(--line); }
   .giftcard-note{ font-size:0.88rem; color:var(--brown-light); line-height:1.8; margin-top:6px; }
   .giftcard-panel .btn{ margin-top:28px; }
+  .giftcard-form{ text-align:left; margin-top:32px; }
+  .giftcard-form .btn{ margin-top:8px; border:none; cursor:pointer; }
+  .giftcard-form .btn[disabled]{ opacity:.6; cursor:default; }
+  .giftcard-panel .form-success{ margin-top:8px; }
 
   /* ---------- reservation ---------- */
   .reservation{ background:var(--cream-2); }
@@ -502,8 +506,46 @@
             <li><span>L'Équilibre — 60 min</span><span>80€</span></li>
             <li><span>L'Immersion — 90 min</span><span>110€</span></li>
           </ul>
-          <p class="giftcard-note">Le bon cadeau est envoyé par e-mail ou remis en main propre. Faites votre demande ci-dessous&nbsp;: le règlement se fait directement avec Nohea.</p>
-          <a href="#reservation" class="btn btn-primary" id="giftCta">Demander un bon cadeau</a>
+          <p class="giftcard-note">Le bon cadeau est envoyé par e-mail ou remis en main propre&nbsp;; le règlement se fait directement avec Nohea. Il n'est pas lié à un créneau&nbsp;: la personne qui le reçoit choisit sa date plus tard, via la réservation.</p>
+
+          <form name="bon-cadeau" method="POST" action="/" target="giftcard-frame" data-netlify="true" netlify-honeypot="bot-field-gift" class="giftcard-form" id="giftcardForm">
+            <input type="hidden" name="form-name" value="bon-cadeau">
+            <p class="hp-field" aria-hidden="true">
+              <label>Ne pas remplir&nbsp;: <input name="bot-field-gift" tabindex="-1" autocomplete="off"></label>
+            </p>
+            <div class="form-grid">
+              <div class="field">
+                <label for="g-name">Votre nom</label>
+                <input type="text" id="g-name" name="nom" required autocomplete="name">
+              </div>
+              <div class="field">
+                <label for="g-contact">Téléphone ou e-mail</label>
+                <input type="text" id="g-contact" name="contact" required autocomplete="tel">
+              </div>
+              <div class="field field-full">
+                <label for="g-formule">Formule souhaitée</label>
+                <select id="g-formule" name="formule" required>
+                  <option value="" disabled selected>Choisissez&hellip;</option>
+                  <option>L'Essentiel — 30 min — 45€</option>
+                  <option>L'Équilibre — 60 min — 80€</option>
+                  <option>L'Immersion — 90 min — 110€</option>
+                  <option>Je ne sais pas encore</option>
+                </select>
+              </div>
+              <div class="field field-full">
+                <label for="g-message">Message (optionnel)</label>
+                <textarea id="g-message" name="message" rows="3" placeholder="Nom de la personne à qui offrir le bon, occasion, etc."></textarea>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Demander ce bon cadeau</button>
+          </form>
+
+          <div class="form-success" id="giftcardSuccess" hidden>
+            <div class="dot-trail" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+            <p>Merci&nbsp;! Votre demande de bon cadeau a bien été envoyée — nous revenons vers vous rapidement.</p>
+          </div>
+
+          <iframe name="giftcard-frame" id="giftcardFrame" title="Envoi du formulaire de bon cadeau" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;" aria-hidden="true"></iframe>
         </div>
       </div>
     </section>
@@ -537,7 +579,6 @@
                 <option data-duration="30">L'Essentiel — 30 min — 45€</option>
                 <option data-duration="60">L'Équilibre — 60 min — 80€</option>
                 <option data-duration="90">L'Immersion — 90 min — 110€</option>
-                <option data-duration="30">Bon cadeau — à offrir</option>
               </select>
             </div>
             <div class="field">
@@ -776,14 +817,37 @@
       });
     }
 
-    // gift card CTA — preselect the matching option in the reservation form
-    const giftCta = document.getElementById('giftCta');
-    if(giftCta){
-      giftCta.addEventListener('click', () => {
-        if(serviceSelect){
-          serviceSelect.value = 'Bon cadeau — à offrir';
-          serviceSelect.dispatchEvent(new Event('change'));
-        }
+    // gift card form — Netlify Forms, submitted through a hidden iframe
+    // (independent from the reservation form: a gift card isn't tied
+    // to a date/time slot, so it doesn't touch the availability logic)
+    const giftForm = document.getElementById('giftcardForm');
+    const giftFrame = document.getElementById('giftcardFrame');
+    if(giftForm && giftFrame){
+      giftForm.addEventListener('submit', () => {
+        const submitBtn = giftForm.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+
+        const showError = (msg) => {
+          submitBtn.disabled = false;
+          let err = giftForm.querySelector('.form-error');
+          if(!err){
+            err = document.createElement('p');
+            err.className = 'form-error';
+            giftForm.appendChild(err);
+          }
+          err.textContent = msg;
+        };
+
+        const timeoutId = setTimeout(() => {
+          showError("L'envoi prend plus de temps que prévu. Réessayez, ou appelez-nous directement au 07 67 38 72 05.");
+        }, 10000);
+
+        giftFrame.addEventListener('load', function onLoad(){
+          giftFrame.removeEventListener('load', onLoad);
+          clearTimeout(timeoutId);
+          giftForm.hidden = true;
+          document.getElementById('giftcardSuccess').hidden = false;
+        }, { once: true });
       });
     }
 
