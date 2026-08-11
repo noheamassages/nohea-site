@@ -244,6 +244,25 @@
     font-style:italic; font-size:1.05rem; line-height:1.9; color:var(--brown);
   }
 
+  /* ---------- giftcards ---------- */
+  .giftcard-panel{
+    max-width:600px; margin:0 auto; text-align:center;
+    border:1px solid var(--line); border-radius:4px;
+    background:var(--cream-2); padding:48px 40px;
+  }
+  .giftcard-panel p{ line-height:1.9; }
+  .giftcard-list{
+    list-style:none; max-width:320px; margin:28px auto; text-align:left;
+  }
+  .giftcard-list li{
+    display:flex; justify-content:space-between; padding:11px 0;
+    font-family:'Poppins', sans-serif; font-size:0.82rem; letter-spacing:0.04em;
+    color:var(--brown-deep);
+  }
+  .giftcard-list li + li{ border-top:1px solid var(--line); }
+  .giftcard-note{ font-size:0.88rem; color:var(--brown-light); line-height:1.8; margin-top:6px; }
+  .giftcard-panel .btn{ margin-top:28px; }
+
   /* ---------- reservation ---------- */
   .reservation{ background:var(--cream-2); }
   .reservation-form{ max-width:640px; margin:0 auto; }
@@ -332,6 +351,12 @@
   }
   footer .foot-mark{ font-style:italic; font-size:1.1rem; margin-bottom:10px; }
   footer .foot-sub{ font-family:'Poppins', sans-serif; font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--brown-light); }
+  footer .foot-links{ margin-top:18px; }
+  footer .foot-links a{
+    font-family:'Poppins', sans-serif; font-size:0.62rem; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--brown-light);
+  }
+  footer .foot-links a:hover{ color:var(--brown); text-decoration:underline; }
 
   @media (prefers-reduced-motion: reduce){
     *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
@@ -348,6 +373,7 @@
     <span class="b-dot" data-sec="services"></span>
     <span class="b-dot" data-sec="about"></span>
     <span class="b-dot" data-sec="avis"></span>
+    <span class="b-dot" data-sec="giftcards"></span>
     <span class="b-dot" data-sec="reservation"></span>
     <span class="b-dot" data-sec="contact"></span>
     <span class="b-dot" data-sec="social"></span>
@@ -359,6 +385,7 @@
       <nav class="nav-links">
         <a href="#philosophy">L'approche</a>
         <a href="#services">Prestations</a>
+        <a href="#giftcards">Cadeaux</a>
         <a href="#about">À propos</a>
         <a href="#contact">Contact</a>
       </nav>
@@ -450,6 +477,25 @@
       </div>
     </section>
 
+    <section class="giftcards" id="giftcards">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow light">Bons cadeaux</p>
+          <h2>Offrez une parenthèse Nohea</h2>
+        </div>
+        <div class="giftcard-panel reveal">
+          <p>Envie de faire plaisir à quelqu'un que vous aimez&nbsp;? Offrez-lui un vrai moment de calme, à choisir parmi les trois formules Nohea.</p>
+          <ul class="giftcard-list">
+            <li><span>L'Essentiel — 30 min</span><span>45€</span></li>
+            <li><span>L'Équilibre — 60 min</span><span>80€</span></li>
+            <li><span>L'Immersion — 90 min</span><span>110€</span></li>
+          </ul>
+          <p class="giftcard-note">Le bon cadeau est envoyé par e-mail ou remis en main propre. Faites votre demande ci-dessous&nbsp;: le règlement se fait directement avec Nohea.</p>
+          <a href="#reservation" class="btn btn-primary" id="giftCta">Demander un bon cadeau</a>
+        </div>
+      </div>
+    </section>
+
     <section class="reservation" id="reservation">
       <div class="wrap">
         <div class="section-head reveal">
@@ -478,6 +524,7 @@
                 <option>L'Essentiel — 30 min — 45€</option>
                 <option>L'Équilibre — 60 min — 80€</option>
                 <option>L'Immersion — 90 min — 110€</option>
+                <option>Bon cadeau — à offrir</option>
               </select>
             </div>
             <div class="field">
@@ -568,6 +615,9 @@
   <footer>
     <div class="foot-mark">Nohea</div>
     <div class="foot-sub">L'art de ralentir</div>
+    <div class="foot-links">
+      <a href="mentions-legales.html">Mentions légales</a>
+    </div>
   </footer>
 
   <script>
@@ -587,7 +637,7 @@
     revealEls.forEach(el => io.observe(el));
 
     // breath rail active section
-    const sections = ['hero','philosophy','services','about','avis','reservation','contact','social'].map(id => document.getElementById(id));
+    const sections = ['hero','philosophy','services','about','avis','giftcards','reservation','contact','social'].map(id => document.getElementById(id));
     const dots = document.querySelectorAll('.breath-rail .b-dot');
     const secIO = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -598,6 +648,15 @@
       });
     }, { threshold: 0.5 });
     sections.forEach(s => s && secIO.observe(s));
+
+    // gift card CTA — preselect the matching option in the reservation form
+    const giftCta = document.getElementById('giftCta');
+    if(giftCta){
+      giftCta.addEventListener('click', () => {
+        const sel = document.getElementById('r-service');
+        if(sel) sel.value = 'Bon cadeau — à offrir';
+      });
+    }
 
     // reservation form — Netlify Forms, submitted via AJAX (no page reload)
     const resForm = document.getElementById('reservationForm');
