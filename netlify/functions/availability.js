@@ -127,3 +127,6 @@ function parseRange(str) {
 // "secret" variable and never reached the Functions runtime (only
 // NETLIFY_SITE_ID, non-secret, did). Re-set as a plain (non-secret)
 // variable to work around it.
+
+// deploy-trigger: 2026-08-11T13:59 — force a fresh Netlify build after
+// the GitHub webhook missed the last two pushes.
