@@ -419,8 +419,6 @@
     <span class="b-dot" data-sec="services"></span>
     <span class="b-dot" data-sec="gallery"></span>
     <span class="b-dot" data-sec="about"></span>
-    <span class="b-dot" data-sec="reservation"></span>
-    <span class="b-dot" data-sec="giftcards"></span>
     <span class="b-dot" data-sec="contact"></span>
     <span class="b-dot" data-sec="social"></span>
     <span class="b-dot" data-sec="avis"></span>
@@ -432,11 +430,10 @@
       <nav class="nav-links">
         <a href="#philosophy">L'approche</a>
         <a href="#services">Prestations</a>
-        <a href="#giftcards">Cadeaux</a>
         <a href="#about">À propos</a>
         <a href="#contact">Contact</a>
       </nav>
-      <a class="nav-cta" href="#reservation">Rendez-vous</a>
+      <a class="nav-cta" href="tel:0644076435">Rendez-vous</a>
     </div>
   </header>
 
@@ -450,7 +447,7 @@
         <p class="eyebrow">L'art de ralentir</p>
       </div>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#reservation">Prendre rendez-vous</a>
+        <a class="btn btn-primary" href="tel:0644076435">Prendre rendez-vous</a>
         <a class="btn btn-ghost" href="#services">Voir les prestations</a>
       </div>
       <div class="scroll-cue" aria-hidden="true">
@@ -534,121 +531,6 @@
         <h2>Un espace pour ralentir, respirer et prendre soin de soi.</h2>
         <p>Je suis Gwenaëlle, praticienne en massage bien-être, et j'ai imaginé Nohea comme une véritable parenthèse dans le quotidien, à Ittenheim.</p>
         <a class="about-link" href="a-propos.html">Découvrir mon histoire &rarr;</a>
-      </div>
-    </section>
-
-    <section class="reservation" id="reservation">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <p class="eyebrow light">Réservation</p>
-          <h2>Réservez votre parenthèse</h2>
-          <p class="section-sub">Rendez-vous uniquement le lundi, de 14h à 18h.</p>
-        </div>
-
-        <form name="reservation" method="POST" action="/" target="reservation-frame" data-netlify="true" netlify-honeypot="bot-field" class="reservation-form reveal" id="reservationForm">
-          <input type="hidden" name="form-name" value="reservation">
-          <p class="hp-field" aria-hidden="true">
-            <label>Ne pas remplir&nbsp;: <input name="bot-field" tabindex="-1" autocomplete="off"></label>
-          </p>
-          <div class="form-grid">
-            <div class="field">
-              <label for="r-name">Nom</label>
-              <input type="text" id="r-name" name="nom" required autocomplete="name">
-            </div>
-            <div class="field">
-              <label for="r-contact">Téléphone ou e-mail</label>
-              <input type="text" id="r-contact" name="contact" required autocomplete="tel">
-            </div>
-            <div class="field">
-              <label for="r-service">Prestation souhaitée</label>
-              <select id="r-service" name="prestation" required>
-                <option value="" disabled selected>Choisissez&hellip;</option>
-                <option data-duration="60">L'Équilibre — 60 min — 80€</option>
-                <option data-duration="90">L'Immersion — 90 min — 110€</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="r-date">Date souhaitée</label>
-              <input type="date" id="r-date" name="date" required>
-              <p class="field-hint">Uniquement le lundi&nbsp;: si vous choisissez un autre jour, la date est ramenée au lundi suivant.</p>
-            </div>
-            <div class="field field-full">
-              <label for="r-slot">Heure souhaitée</label>
-              <select id="r-slot" name="creneau" required disabled>
-                <option value="" disabled selected>Choisissez d'abord une date&hellip;</option>
-              </select>
-              <p class="field-hint" id="slotHint">Les créneaux déjà réservés sont automatiquement retirés (30 min de battement inclus après chaque rendez-vous, pour préparer le salon).</p>
-            </div>
-            <div class="field field-full">
-              <label for="r-message">Message (optionnel)</label>
-              <textarea id="r-message" name="message" rows="3"></textarea>
-            </div>
-          </div>
-          <button type="submit" class="btn btn-primary">Envoyer la demande</button>
-          <p class="form-note">Votre demande sera confirmée par téléphone ou e-mail avant le rendez-vous. Vous pouvez aussi appeler directement au <a href="tel:0644076435">06 44 07 64 35</a>.</p>
-        </form>
-
-        <div class="form-success" id="formSuccess" hidden>
-          <div class="dot-trail" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-          <p>Merci&nbsp;! Votre demande a bien été envoyée — nous revenons vers vous rapidement pour confirmer votre rendez-vous.</p>
-        </div>
-
-        <iframe name="reservation-frame" id="reservationFrame" title="Envoi du formulaire de réservation" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;" aria-hidden="true"></iframe>
-      </div>
-    </section>
-
-    <section class="giftcards" id="giftcards">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <p class="eyebrow light">Bons cadeaux</p>
-          <h2>Offrez une parenthèse Nohea</h2>
-        </div>
-        <div class="giftcard-panel reveal">
-          <p>Envie de faire plaisir à quelqu'un que vous aimez&nbsp;? Offrez-lui un vrai moment de calme, à choisir parmi les deux formules Nohea.</p>
-          <ul class="giftcard-list">
-            <li><span>L'Équilibre — 60 min</span><span>80€</span></li>
-            <li><span>L'Immersion — 90 min</span><span>110€</span></li>
-          </ul>
-          <p class="giftcard-note">Le bon cadeau est envoyé par e-mail ou remis en main propre&nbsp;; le règlement se fait directement avec Nohea. Il n'est pas lié à un créneau&nbsp;: la personne qui le reçoit choisit sa date plus tard, via la réservation.</p>
-
-          <form name="bon-cadeau" method="POST" action="/" target="giftcard-frame" data-netlify="true" netlify-honeypot="bot-field-gift" class="giftcard-form" id="giftcardForm">
-            <input type="hidden" name="form-name" value="bon-cadeau">
-            <p class="hp-field" aria-hidden="true">
-              <label>Ne pas remplir&nbsp;: <input name="bot-field-gift" tabindex="-1" autocomplete="off"></label>
-            </p>
-            <div class="form-grid">
-              <div class="field">
-                <label for="g-name">Votre nom</label>
-                <input type="text" id="g-name" name="nom" required autocomplete="name">
-              </div>
-              <div class="field">
-                <label for="g-contact">Téléphone ou e-mail</label>
-                <input type="text" id="g-contact" name="contact" required autocomplete="tel">
-              </div>
-              <div class="field field-full">
-                <label for="g-formule">Formule souhaitée</label>
-                <select id="g-formule" name="formule" required>
-                  <option value="" disabled selected>Choisissez&hellip;</option>
-                  <option>L'Équilibre — 60 min — 80€</option>
-                  <option>L'Immersion — 90 min — 110€</option>
-                  <option>Je ne sais pas encore</option>
-                </select>
-              </div>
-              <div class="field field-full">
-                <label for="g-message">Message (optionnel)</label>
-                <textarea id="g-message" name="message" rows="3" placeholder="Nom de la personne à qui offrir le bon, occasion, etc."></textarea>
-              </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Demander ce bon cadeau</button>
-          </form>
-
-          <div class="form-success" id="giftcardSuccess" hidden>
-            <div class="dot-trail" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-            <p>Merci&nbsp;! Votre demande de bon cadeau a bien été envoyée — nous revenons vers vous rapidement.</p>
-          </div>
-
-          <iframe name="giftcard-frame" id="giftcardFrame" title="Envoi du formulaire de bon cadeau" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;" aria-hidden="true"></iframe>
-        </div>
       </div>
     </section>
 
@@ -759,7 +641,7 @@
     revealEls.forEach(el => io.observe(el));
 
     // breath rail active section
-    const sections = ['hero','philosophy','services','gallery','about','reservation','giftcards','contact','social','avis'].map(id => document.getElementById(id));
+    const sections = ['hero','philosophy','services','gallery','about','contact','social','avis'].map(id => document.getElementById(id));
     const dots = document.querySelectorAll('.breath-rail .b-dot');
     const secIO = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
