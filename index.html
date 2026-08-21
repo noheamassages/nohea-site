@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nohea — L'art de ralentir</title>
-<meta name="description" content="Nohea, massages bien-être sur rendez-vous à Ittenheim. L'Essentiel, L'Équilibre, L'Immersion.">
+<meta name="description" content="Nohea, massages bien-être sur rendez-vous à Ittenheim. L'Équilibre, L'Immersion.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
@@ -199,11 +199,12 @@
     font-size:0.92rem; color:var(--brown-light); margin-top:14px;
   }
   .service-grid{
-    display:grid; grid-template-columns:repeat(3, 1fr); gap:1px;
+    display:grid; grid-template-columns:repeat(2, 1fr); gap:1px;
     background:var(--line);
     border:1px solid var(--line);
+    max-width:720px; margin:0 auto;
   }
-  @media (max-width:820px){ .service-grid{ grid-template-columns:1fr; } }
+  @media (max-width:640px){ .service-grid{ grid-template-columns:1fr; } }
   .service-card{
     background:var(--cream-2);
     padding:48px 36px;
@@ -472,29 +473,22 @@
       <div class="wrap">
         <div class="section-head reveal">
           <p class="eyebrow light">Prestations</p>
-          <h2>Choisissez votre parenthèse</h2>
+          <h2>Deux temps pour souffler</h2>
         </div>
         <div class="service-grid reveal">
           <div class="service-card">
             <p class="eyebrow light">01</p>
-            <h3 class="s-name">L'Essentiel</h3>
-            <p class="s-duration">30 minutes</p>
-            <p class="s-desc">Une pause ciblée pour retrouver rapidement calme et légèreté.</p>
-            <p class="s-price"><sup>&euro;</sup>40</p>
+            <h3 class="s-name">L'Équilibre</h3>
+            <p class="s-duration">60 minutes</p>
+            <p class="s-desc">Une heure, c'est le temps qu'il faut au mental pour lâcher prise. Le corps se dénoue, la respiration ralentit et les pensées cessent enfin de tourner.</p>
+            <p class="s-price"><sup>&euro;</sup>80</p>
           </div>
           <div class="service-card">
             <p class="eyebrow light">02</p>
-            <h3 class="s-name">L'Équilibre</h3>
-            <p class="s-duration">60 minutes</p>
-            <p class="s-desc">Le temps idéal pour ralentir, relâcher le corps et retrouver une profonde sensation de bien-être.</p>
-            <p class="s-price"><sup>&euro;</sup>70</p>
-          </div>
-          <div class="service-card">
-            <p class="eyebrow light">03</p>
             <h3 class="s-name">L'Immersion</h3>
             <p class="s-duration">90 minutes</p>
-            <p class="s-desc">Une expérience complète pour vous abandonner pleinement au moment présent.</p>
-            <p class="s-price"><sup>&euro;</sup>100</p>
+            <p class="s-desc">Pour les périodes de tension accumulée. Une séance qui ne se contente pas de détendre les muscles&nbsp;: elle remet le système nerveux à zéro.</p>
+            <p class="s-price"><sup>&euro;</sup>110</p>
           </div>
         </div>
       </div>
@@ -569,9 +563,8 @@
               <label for="r-service">Prestation souhaitée</label>
               <select id="r-service" name="prestation" required>
                 <option value="" disabled selected>Choisissez&hellip;</option>
-                <option data-duration="30">L'Essentiel — 30 min — 40€</option>
-                <option data-duration="60">L'Équilibre — 60 min — 70€</option>
-                <option data-duration="90">L'Immersion — 90 min — 100€</option>
+                <option data-duration="60">L'Équilibre — 60 min — 80€</option>
+                <option data-duration="90">L'Immersion — 90 min — 110€</option>
               </select>
             </div>
             <div class="field">
@@ -611,11 +604,10 @@
           <h2>Offrez une parenthèse Nohea</h2>
         </div>
         <div class="giftcard-panel reveal">
-          <p>Envie de faire plaisir à quelqu'un que vous aimez&nbsp;? Offrez-lui un vrai moment de calme, à choisir parmi les trois formules Nohea.</p>
+          <p>Envie de faire plaisir à quelqu'un que vous aimez&nbsp;? Offrez-lui un vrai moment de calme, à choisir parmi les deux formules Nohea.</p>
           <ul class="giftcard-list">
-            <li><span>L'Essentiel — 30 min</span><span>40€</span></li>
-            <li><span>L'Équilibre — 60 min</span><span>70€</span></li>
-            <li><span>L'Immersion — 90 min</span><span>100€</span></li>
+            <li><span>L'Équilibre — 60 min</span><span>80€</span></li>
+            <li><span>L'Immersion — 90 min</span><span>110€</span></li>
           </ul>
           <p class="giftcard-note">Le bon cadeau est envoyé par e-mail ou remis en main propre&nbsp;; le règlement se fait directement avec Nohea. Il n'est pas lié à un créneau&nbsp;: la personne qui le reçoit choisit sa date plus tard, via la réservation.</p>
 
@@ -637,9 +629,8 @@
                 <label for="g-formule">Formule souhaitée</label>
                 <select id="g-formule" name="formule" required>
                   <option value="" disabled selected>Choisissez&hellip;</option>
-                  <option>L'Essentiel — 30 min — 40€</option>
-                  <option>L'Équilibre — 60 min — 70€</option>
-                  <option>L'Immersion — 90 min — 100€</option>
+                  <option>L'Équilibre — 60 min — 80€</option>
+                  <option>L'Immersion — 90 min — 110€</option>
                   <option>Je ne sais pas encore</option>
                 </select>
               </div>
@@ -676,7 +667,7 @@
               </span>
               <div>
                 <span class="c-label">Lieu</span>
-                <span class="c-value">Ittenheim</span>
+                <span class="c-value">11 route de Paris, 67117 Ittenheim<br>Au sein de Corps &amp; Sens</span>
               </div>
             </div>
             <div class="contact-row">
