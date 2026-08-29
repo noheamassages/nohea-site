@@ -61,20 +61,6 @@
   .dot-trail span:nth-child(4){ width:3px; height:3px; opacity:.55;}
   .dot-trail span:nth-child(5){ width:2px; height:2px; opacity:.4;}
 
-  /* vertical breath progress, fixed side rail */
-  .breath-rail{
-    position:fixed; right:22px; top:50%; transform:translateY(-50%);
-    display:flex; flex-direction:column; align-items:center; gap:10px;
-    z-index:40;
-  }
-  .breath-rail .b-dot{
-    width:5px; height:5px; border-radius:50%;
-    background:var(--line);
-    transition:background .4s ease, transform .4s ease;
-  }
-  .breath-rail .b-dot.active{ background:var(--brown); transform:scale(1.5); }
-  @media (max-width:800px){ .breath-rail{ display:none; } }
-
   /* ---------- nav ---------- */
   header.site-nav{
     position:fixed; top:0; left:0; right:0; z-index:50;
@@ -90,7 +76,8 @@
     max-width:var(--max); margin:0 auto; padding:16px 28px;
     display:flex; align-items:center; justify-content:space-between;
   }
-  .nav-mark{ font-family:'Lora', serif; font-style:italic; font-size:1.25rem; color:var(--brown); }
+  .nav-mark{ display:flex; align-items:center; }
+  .nav-mark img{ height:40px; width:auto; }
   .nav-links{ display:flex; gap:34px; }
   .nav-links a{
     font-family:'Poppins', sans-serif; font-size:0.68rem; letter-spacing:0.2em;
@@ -353,20 +340,9 @@
 </head>
 <body>
 
-  <div class="breath-rail" aria-hidden="true">
-    <span class="b-dot active" data-sec="hero"></span>
-    <span class="b-dot" data-sec="philosophy"></span>
-    <span class="b-dot" data-sec="services"></span>
-    <span class="b-dot" data-sec="gallery"></span>
-    <span class="b-dot" data-sec="about"></span>
-    <span class="b-dot" data-sec="contact"></span>
-    <span class="b-dot" data-sec="social"></span>
-    <span class="b-dot" data-sec="avis"></span>
-  </div>
-
   <header class="site-nav" id="siteNav">
     <div class="nav-inner">
-      <a href="#hero" class="nav-mark">Nohea</a>
+      <a href="#hero" class="nav-mark"><img src="assets/logo.png" alt="Nohea" width="300" height="300"></a>
       <nav class="nav-links">
         <a href="#philosophy">L'approche</a>
         <a href="#services">Prestations</a>
@@ -581,19 +557,6 @@
       });
     }, { threshold: 0.15 });
     revealEls.forEach(el => io.observe(el));
-
-    // breath rail active section
-    const sections = ['hero','philosophy','services','gallery','about','contact','social','avis'].map(id => document.getElementById(id));
-    const dots = document.querySelectorAll('.breath-rail .b-dot');
-    const secIO = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting){
-          const id = entry.target.id;
-          dots.forEach(d => d.classList.toggle('active', d.dataset.sec === id));
-        }
-      });
-    }, { threshold: 0.5 });
-    sections.forEach(s => s && secIO.observe(s));
 
     // gallery — small auto-advancing carousel, pauses on hover/focus,
     // respects prefers-reduced-motion
