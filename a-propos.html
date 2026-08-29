@@ -46,13 +46,6 @@
     text-transform:uppercase; color:var(--brown-light);
   }
   .divider{ width:34px; height:1px; background:var(--line); margin:22px 0; }
-  .dot-trail{ display:flex; align-items:center; gap:7px; }
-  .dot-trail span{ display:block; border-radius:50%; background:var(--brown); }
-  .dot-trail span:nth-child(1){ width:9px; height:9px; }
-  .dot-trail span:nth-child(2){ width:6.5px; height:6.5px; opacity:.85;}
-  .dot-trail span:nth-child(3){ width:4.5px; height:4.5px; opacity:.7;}
-  .dot-trail span:nth-child(4){ width:3px; height:3px; opacity:.55;}
-  .dot-trail span:nth-child(5){ width:2px; height:2px; opacity:.4;}
 
   main{ padding:64px 0 100px; }
   .about-grid{
@@ -68,7 +61,8 @@
     font-size:clamp(1.4rem, 3vw, 1.85rem); font-weight:400; font-style:italic;
     color:var(--brown-deep); line-height:1.5; margin-bottom:48px; max-width:520px;
   }
-  p{ margin-bottom:22px; max-width:var(--text-max); }
+  p{ margin-bottom:22px; max-width:var(--text-max); text-align:justify; hyphens:auto; }
+  .eyebrow, .hero-line{ text-align:left; }
   h2{
     font-size:clamp(1.25rem, 2.4vw, 1.6rem); font-weight:400; font-style:italic;
     color:var(--brown-deep); margin:56px 0 22px;
@@ -78,8 +72,9 @@
   }
   .cta{
     margin-top:56px; padding-top:40px; border-top:1px solid var(--line);
+    text-align:center;
   }
-  .cta p{ margin-bottom:22px; }
+  .cta p{ margin-bottom:22px; text-align:center; }
   .btn{
     display:inline-block; font-family:'Poppins', sans-serif; font-size:0.72rem; letter-spacing:0.18em;
     text-transform:uppercase; padding:14px 30px; border-radius:3px;
@@ -140,8 +135,7 @@
         <p>Je vous accueille à Ittenheim, dans un espace pensé pour vous faire sentir immédiatement bien. Entrez, respirez&hellip; et laissez-vous porter.</p>
 
         <div class="cta">
-          <div class="dot-trail" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-          <p style="margin-top:22px;">Envie de vous accorder ce moment&nbsp;?</p>
+          <p>Envie de vous accorder ce moment&nbsp;?</p>
           <a class="btn" href="https://www.fresha.com/book-now/nohea-di6z0quc/services?lid=3180996&eid=5549410&share=true&pId=3077017" target="_blank" rel="noopener">Réserver votre massage</a>
         </div>
       </div>
