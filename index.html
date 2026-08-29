@@ -195,9 +195,6 @@
     font-size:clamp(1.5rem, 2.6vw, 2rem); font-weight:400; font-style:italic; margin-top:14px;
     color:var(--brown-deep);
   }
-  .section-head .section-sub{
-    font-size:0.92rem; color:var(--brown-light); margin-top:14px;
-  }
   .service-grid{
     display:grid; grid-template-columns:repeat(2, 1fr); gap:1px;
     background:var(--line);
@@ -284,57 +281,6 @@
   .avis-placeholder p{
     font-style:italic; font-size:1.05rem; line-height:1.9; color:var(--brown);
   }
-
-  /* ---------- giftcards ---------- */
-  .giftcard-panel{
-    max-width:600px; margin:0 auto; text-align:center;
-    border:1px solid var(--line); border-radius:4px;
-    background:var(--cream-2); padding:48px 40px;
-  }
-  .giftcard-panel p{ line-height:1.9; }
-  .giftcard-list{
-    list-style:none; max-width:320px; margin:28px auto; text-align:left;
-  }
-  .giftcard-list li{
-    display:flex; justify-content:space-between; padding:11px 0;
-    font-family:'Poppins', sans-serif; font-size:0.82rem; letter-spacing:0.04em;
-    color:var(--brown-deep);
-  }
-  .giftcard-list li + li{ border-top:1px solid var(--line); }
-  .giftcard-note{ font-size:0.88rem; color:var(--brown-light); line-height:1.8; margin-top:6px; }
-  .giftcard-panel .btn{ margin-top:28px; }
-  .giftcard-form{ text-align:left; margin-top:32px; }
-  .giftcard-form .btn{ margin-top:8px; border:none; cursor:pointer; }
-  .giftcard-form .btn[disabled]{ opacity:.6; cursor:default; }
-  .giftcard-panel .form-success{ margin-top:8px; }
-
-  /* ---------- reservation ---------- */
-  .reservation{ background:var(--cream-2); }
-  .reservation-form{ max-width:640px; margin:0 auto; }
-  .hp-field{ position:absolute; left:-9999px; top:auto; }
-  .form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:22px 24px; }
-  .field-full{ grid-column:1 / -1; }
-  @media (max-width:720px){ .form-grid{ grid-template-columns:1fr; } }
-  .field label{
-    display:block; font-family:'Poppins', sans-serif; font-size:0.62rem; letter-spacing:0.16em;
-    text-transform:uppercase; color:var(--brown-light); margin-bottom:8px;
-  }
-  .field input, .field select, .field textarea{
-    width:100%; font-family:'Lora', serif; font-size:0.98rem; color:var(--brown-deep);
-    background:var(--cream); border:1px solid var(--line); border-radius:3px;
-    padding:12px 14px; transition:border-color .3s ease;
-  }
-  .field textarea{ resize:vertical; }
-  .field input:focus, .field select:focus, .field textarea:focus{ outline:none; border-color:var(--brown); }
-  .field-hint{ margin-top:8px; font-size:0.76rem; color:var(--brown-light); line-height:1.6; }
-  .reservation-form .btn{ margin-top:32px; border:none; cursor:pointer; }
-  .reservation-form .btn[disabled]{ opacity:.6; cursor:default; }
-  .form-note{ margin-top:18px; font-size:0.85rem; color:var(--brown-light); line-height:1.7; }
-  .form-note a{ text-decoration:underline; }
-  .form-error{ margin-top:14px; font-family:'Poppins', sans-serif; font-size:0.78rem; color:#a5402c; }
-  .form-success{ text-align:center; max-width:480px; margin:0 auto; }
-  .form-success .dot-trail{ margin-bottom:22px; }
-  .form-success p{ font-style:italic; font-size:1.05rem; line-height:1.8; color:var(--brown); }
 
   /* ---------- contact ---------- */
   .contact-grid{
@@ -433,7 +379,7 @@
         <a href="#about">À propos</a>
         <a href="#contact">Contact</a>
       </nav>
-      <a class="nav-cta" href="https://nohea.simplybook.me/v2/widget-preview" target="_blank" rel="noopener">Réserver</a>
+      <a class="nav-cta" href="https://www.fresha.com/book-now/nohea-di6z0quc/services?lid=3180996&eid=5549410&share=true&pId=3077017" target="_blank" rel="noopener">Réserver</a>
     </div>
   </header>
 
@@ -447,7 +393,7 @@
         <p class="eyebrow">L'art de ralentir</p>
       </div>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="https://nohea.simplybook.me/v2/widget-preview" target="_blank" rel="noopener">Réserver votre massage</a>
+        <a class="btn btn-primary" href="https://www.fresha.com/book-now/nohea-di6z0quc/services?lid=3180996&eid=5549410&share=true&pId=3077017" target="_blank" rel="noopener">Réserver votre massage</a>
         <a class="btn btn-ghost" href="#services">Voir les prestations</a>
       </div>
       <div class="scroll-cue" aria-hidden="true">
@@ -685,180 +631,6 @@
       galleryCarousel.addEventListener('focusout', startAuto);
     }
 
-    // reservation time slots — a dense 30-min grid from 14h to 18h,
-    // filtered down to what's actually free by calling the
-    // /availability function, which reads existing "reservation" form
-    // submissions for the chosen date. A slot is hidden only if it
-    // would overlap a real booking (already-booked end time + 30 min
-    // cleaning buffer) — the buffer is never applied to empty slots,
-    // only right after a genuine appointment.
-    const OPEN_MIN = 14 * 60;
-    const CLOSE_MIN = 18 * 60;
-    const STEP_MIN = 30;
-    const serviceSelect = document.getElementById('r-service');
-    const slotSelect = document.getElementById('r-slot');
-    const dateInput = document.getElementById('r-date');
-    const slotHint = document.getElementById('slotHint');
-    const SLOT_HINT_DEFAULT = slotHint ? slotHint.textContent : '';
-    const SLOT_HINT_UNVERIFIED = "Disponibilité non vérifiée en temps réel pour le moment — nous confirmerons votre créneau par téléphone ou e-mail.";
-
-    function formatTime(mins){
-      const h = Math.floor(mins / 60), m = mins % 60;
-      return m === 0 ? `${h}h` : `${h}h${String(m).padStart(2, '0')}`;
-    }
-
-    function overlaps(startA, endA, startB, endB){
-      return startA < endB && endA > startB;
-    }
-
-    async function fetchBusy(date){
-      try{
-        const res = await fetch(`/.netlify/functions/availability?date=${encodeURIComponent(date)}`);
-        if(!res.ok) return { busy: [], ok: false };
-        const data = await res.json();
-        return { busy: Array.isArray(data.busy) ? data.busy : [], ok: !data.error };
-      } catch(err){
-        return { busy: [], ok: false };
-      }
-    }
-
-    async function refreshSlots(){
-      if(!serviceSelect || !slotSelect || !dateInput) return;
-
-      if(!dateInput.value){
-        slotSelect.disabled = true;
-        slotSelect.innerHTML = '<option value="" disabled selected>Choisissez d\'abord une date&hellip;</option>';
-        return;
-      }
-
-      const opt = serviceSelect.options[serviceSelect.selectedIndex];
-      const duration = (opt && parseInt(opt.dataset.duration, 10)) || 30;
-      const previous = slotSelect.value;
-
-      slotSelect.disabled = true;
-      slotSelect.innerHTML = '<option value="" disabled selected>Vérification des disponibilités&hellip;</option>';
-      if(slotHint) slotHint.textContent = SLOT_HINT_DEFAULT;
-
-      const { busy, ok } = await fetchBusy(dateInput.value);
-
-      const labels = [];
-      for(let t = OPEN_MIN; t + duration <= CLOSE_MIN; t += STEP_MIN){
-        const end = t + duration;
-        const isBusy = busy.some(b => overlaps(t, end, b.start, b.end));
-        if(!isBusy) labels.push(`${formatTime(t)} à ${formatTime(end)}`);
-      }
-
-      slotSelect.disabled = false;
-      if(labels.length === 0){
-        slotSelect.innerHTML = '<option value="" disabled selected>Plus aucun créneau ce jour — essayez un autre lundi</option>';
-      } else {
-        slotSelect.innerHTML = '<option value="" disabled selected>Choisissez&hellip;</option>'
-          + labels.map(l => `<option>${l}</option>`).join('');
-        if(labels.includes(previous)) slotSelect.value = previous;
-      }
-
-      if(!ok && slotHint) slotHint.textContent = SLOT_HINT_UNVERIFIED;
-    }
-
-    if(serviceSelect && slotSelect && dateInput){
-      refreshSlots();
-      serviceSelect.addEventListener('change', refreshSlots);
-    }
-
-    // reservation date — calendar picker restricted to Mondays
-    if(dateInput){
-      const toISODate = (d) => {
-        const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, '0'), day = String(d.getDate()).padStart(2, '0');
-        return `${y}-${m}-${day}`;
-      };
-      const nextMonday = (from) => {
-        const d = new Date(from.getFullYear(), from.getMonth(), from.getDate());
-        d.setDate(d.getDate() + ((8 - d.getDay()) % 7));
-        return d;
-      };
-      dateInput.min = toISODate(nextMonday(new Date()));
-      dateInput.addEventListener('change', () => {
-        if(dateInput.value){
-          const [y, m, d] = dateInput.value.split('-').map(Number);
-          const chosen = new Date(y, m - 1, d);
-          if(chosen.getDay() !== 1){
-            dateInput.value = toISODate(nextMonday(chosen));
-          }
-        }
-        refreshSlots();
-      });
-    }
-
-    // gift card form — Netlify Forms, submitted through a hidden iframe
-    // (independent from the reservation form: a gift card isn't tied
-    // to a date/time slot, so it doesn't touch the availability logic)
-    const giftForm = document.getElementById('giftcardForm');
-    const giftFrame = document.getElementById('giftcardFrame');
-    if(giftForm && giftFrame){
-      giftForm.addEventListener('submit', () => {
-        const submitBtn = giftForm.querySelector('button[type="submit"]');
-        submitBtn.disabled = true;
-
-        const showError = (msg) => {
-          submitBtn.disabled = false;
-          let err = giftForm.querySelector('.form-error');
-          if(!err){
-            err = document.createElement('p');
-            err.className = 'form-error';
-            giftForm.appendChild(err);
-          }
-          err.textContent = msg;
-        };
-
-        const timeoutId = setTimeout(() => {
-          showError("L'envoi prend plus de temps que prévu. Réessayez, ou appelez-nous directement au 06 44 07 64 35.");
-        }, 10000);
-
-        giftFrame.addEventListener('load', function onLoad(){
-          giftFrame.removeEventListener('load', onLoad);
-          clearTimeout(timeoutId);
-          giftForm.hidden = true;
-          document.getElementById('giftcardSuccess').hidden = false;
-        }, { once: true });
-      });
-    }
-
-    // reservation form — Netlify Forms, submitted through a hidden iframe
-    // (no page reload; more robust than fetch() against cross-origin
-    // redirects some custom domains trigger — e.g. apex ↔ www — which
-    // can make fetch() fail even when the submission itself would succeed)
-    const resForm = document.getElementById('reservationForm');
-    const resFrame = document.getElementById('reservationFrame');
-    if(resForm && resFrame){
-      resForm.addEventListener('submit', () => {
-        const submitBtn = resForm.querySelector('button[type="submit"]');
-        submitBtn.disabled = true;
-
-        const showError = (msg) => {
-          submitBtn.disabled = false;
-          let err = resForm.querySelector('.form-error');
-          if(!err){
-            err = document.createElement('p');
-            err.className = 'form-error';
-            resForm.appendChild(err);
-          }
-          err.textContent = msg;
-        };
-
-        const timeoutId = setTimeout(() => {
-          showError("L'envoi prend plus de temps que prévu. Réessayez, ou appelez-nous directement au 06 44 07 64 35.");
-        }, 10000);
-
-        resFrame.addEventListener('load', function onLoad(){
-          resFrame.removeEventListener('load', onLoad);
-          clearTimeout(timeoutId);
-          resForm.hidden = true;
-          document.getElementById('formSuccess').hidden = false;
-        }, { once: true });
-        // form submission proceeds natively (no preventDefault) — the
-        // browser posts it into the hidden iframe above.
-      });
-    }
   </script>
 </body>
 </html>
