@@ -73,11 +73,11 @@
     border-bottom:1px solid var(--line);
   }
   .nav-inner{
-    max-width:var(--max); margin:0 auto; padding:16px 28px;
+    max-width:var(--max); margin:0 auto; padding:8px 28px;
     display:flex; align-items:center; justify-content:space-between;
   }
   .nav-mark{ display:flex; align-items:center; }
-  .nav-mark img{ height:64px; width:auto; }
+  .nav-mark img{ height:104px; width:auto; }
   .nav-links{ display:flex; gap:34px; }
   .nav-links a{
     font-family:'Poppins', sans-serif; font-size:0.68rem; letter-spacing:0.2em;
@@ -99,7 +99,7 @@
   /* ---------- hero ---------- */
   .hero{
     display:flex; flex-direction:column; align-items:center;
-    text-align:center; position:relative; padding:104px 0 60px;
+    text-align:center; position:relative; padding:136px 0 60px;
   }
   .hero-cover{
     position:relative; width:100%; aspect-ratio:1800/1199;
@@ -188,8 +188,31 @@
     padding:48px 36px;
     display:flex; flex-direction:column;
     transition:background .4s ease;
+    position:relative; overflow:hidden;
   }
   .service-card:hover{ background:var(--cream); }
+  .service-card.featured{
+    background:linear-gradient(168deg, var(--cream) 0%, var(--cream-2) 65%);
+    box-shadow:inset 0 0 0 1px var(--brown-light);
+  }
+  .service-card.featured:hover{ background:linear-gradient(168deg, var(--cream) 0%, var(--cream) 100%); }
+  .offer-ribbon{
+    position:absolute; top:30px; right:-56px; width:210px;
+    text-align:center; transform:rotate(40deg);
+    background:var(--brown-deep); color:var(--cream);
+    font-family:'Poppins', sans-serif; font-size:0.6rem; letter-spacing:0.08em;
+    line-height:1.4;
+    text-transform:uppercase; padding:7px 0;
+    box-shadow:0 4px 12px -4px rgba(78,48,24,0.5);
+  }
+  @media (max-width:640px){
+    .offer-ribbon{
+      position:absolute; top:20px; right:20px; width:auto;
+      transform:none; border-radius:20px; padding:7px 14px;
+      font-size:0.56rem; line-height:1.3; text-align:center;
+      box-shadow:0 3px 10px -4px rgba(78,48,24,0.45);
+    }
+  }
   .service-card .s-name{
     font-size:1.35rem; font-weight:400; margin-top:14px;
   }
@@ -203,21 +226,26 @@
   }
   .service-card .s-price{
     font-size:2rem; margin-top:28px; color:var(--brown-deep);
-    display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
   }
   .service-card .s-price sup{ font-size:1rem; margin-right:2px; }
   .service-card .s-price .s-price-old{
-    font-size:1.15rem; color:var(--brown-light); text-decoration:line-through;
+    font-size:1.2rem; color:var(--brown-light); text-decoration:line-through;
+    align-self:baseline;
   }
-  .launch-offer{
-    font-family:'Poppins', sans-serif; font-size:0.62rem; letter-spacing:0.14em;
-    text-transform:uppercase; color:var(--brown-deep); background:var(--cream);
-    border:1px solid var(--brown-light); border-radius:3px; padding:5px 10px;
-    display:inline-block; margin-bottom:14px;
+  .service-card .s-price .s-price-new{
+    align-self:baseline;
+  }
+  .service-card.featured .s-price .s-price-new{
+    font-size:2.7rem; font-weight:500; color:var(--brown-deep);
+  }
+  .s-discount{
+    font-family:'Poppins', sans-serif; font-size:0.68rem; font-weight:500; letter-spacing:0.03em;
+    background:var(--brown-deep); color:var(--cream); padding:5px 11px; border-radius:20px;
   }
   .launch-note{
-    font-family:'Poppins', sans-serif; font-size:0.64rem; letter-spacing:0.06em;
-    color:var(--brown-light); margin-top:8px;
+    font-family:'Poppins', sans-serif; font-size:0.64rem; letter-spacing:0.1em;
+    text-transform:uppercase; color:var(--brown-light); margin-top:12px;
   }
 
   /* ---------- gallery ---------- */
@@ -405,14 +433,18 @@
           <h2>Deux temps pour souffler</h2>
         </div>
         <div class="service-grid reveal">
-          <div class="service-card">
+          <div class="service-card featured">
+            <span class="offer-ribbon">Offre de<br>lancement</span>
             <p class="eyebrow light">01</p>
             <h3 class="s-name">L'Équilibre</h3>
             <p class="s-duration">60 minutes</p>
             <p class="s-desc">Une heure, c'est le temps qu'il faut au mental pour lâcher prise. Le corps se dénoue, la respiration ralentit et les pensées cessent enfin de tourner.</p>
-            <span class="launch-offer">Offre de lancement</span>
-            <p class="s-price"><span class="s-price-old">80&nbsp;&euro;</span><span><sup>&euro;</sup>65</span></p>
-            <p class="launch-note">Jusqu'au 31 octobre</p>
+            <p class="s-price">
+              <span class="s-price-old">80&nbsp;&euro;</span>
+              <span class="s-price-new"><sup>&euro;</sup>65</span>
+              <span class="s-discount">&minus;19&nbsp;%</span>
+            </p>
+            <p class="launch-note">Offre valable jusqu'au 31 octobre 2026</p>
           </div>
           <div class="service-card">
             <p class="eyebrow light">02</p>
