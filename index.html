@@ -111,23 +111,17 @@
 
   /* ---------- hero ---------- */
   .hero{
-    min-height:100svh;
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    text-align:center; position:relative; padding:120px 24px 60px;
+    display:flex; flex-direction:column; align-items:center;
+    text-align:center; position:relative; padding:88px 0 60px;
   }
-  .hero-ring{
-    position:relative;
-    width:min(360px, 62vw); height:min(360px, 62vw);
-    display:flex; align-items:center; justify-content:center;
-    margin-bottom:8px;
+  .hero-cover{
+    position:relative; width:100%; aspect-ratio:1800/1199;
+    background:var(--cream-2); overflow:hidden;
   }
-  .hero-ring img{
-    width:100%; height:100%; object-fit:contain;
-    animation:breathe 7s ease-in-out infinite;
-  }
-  @keyframes breathe{
-    0%,100%{ transform:scale(1); opacity:1; }
-    50%{ transform:scale(1.035); opacity:.94; }
+  .hero-cover img{ width:100%; height:100%; object-fit:contain; display:block; }
+  .hero-content{
+    max-width:var(--max); margin:0 auto; padding:44px 24px 0; width:100%;
+    display:flex; flex-direction:column; align-items:center;
   }
   .hero h1{
     font-size:clamp(1.7rem, 3.2vw, 2.5rem);
@@ -385,20 +379,22 @@
 
   <main>
     <section class="hero" id="hero">
-      <div class="hero-ring">
-        <img src="assets/logo.png" alt="Nohea — logo" width="300" height="300">
+      <div class="hero-cover">
+        <img src="assets/hero-photo.jpg" alt="Massage bien-être Nohea — soin du visage et de la nuque">
       </div>
-      <h1>Entrez, respirez&hellip;<br>et laissez-vous porter.</h1>
-      <div class="tagline">
-        <p class="eyebrow">L'art de ralentir</p>
-      </div>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="https://www.fresha.com/book-now/nohea-di6z0quc/services?lid=3180996&eid=5549410&share=true&pId=3077017" target="_blank" rel="noopener">Réserver votre massage</a>
-        <a class="btn btn-ghost" href="#services">Voir les prestations</a>
-      </div>
-      <div class="scroll-cue" aria-hidden="true">
-        <span class="line"></span>
-        <div class="dot-trail"><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="hero-content">
+        <h1>Entrez, respirez&hellip;<br>et laissez-vous porter.</h1>
+        <div class="tagline">
+          <p class="eyebrow">L'art de ralentir</p>
+        </div>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://www.fresha.com/book-now/nohea-di6z0quc/services?lid=3180996&eid=5549410&share=true&pId=3077017" target="_blank" rel="noopener">Réserver votre massage</a>
+          <a class="btn btn-ghost" href="#services">Voir les prestations</a>
+        </div>
+        <div class="scroll-cue" aria-hidden="true">
+          <span class="line"></span>
+          <div class="dot-trail"><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
       </div>
     </section>
 
