@@ -16,7 +16,8 @@
     --brown-deep:#4E3018;
     --brown-light:#9C7A57;
     --line:#D8C6B4;
-    --max:720px;
+    --max:1040px;
+    --text-max:640px;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   body{
@@ -32,7 +33,7 @@
   header{
     padding:32px 0; border-bottom:1px solid var(--line); margin-bottom:8px;
   }
-  header .wrap{ display:flex; align-items:center; justify-content:space-between; max-width:1040px; }
+  header .wrap{ display:flex; align-items:center; justify-content:space-between; }
   .nav-mark{ font-family:'Lora', serif; font-style:italic; font-size:1.25rem; color:var(--brown); text-decoration:none; }
   .back-link{
     font-family:'Poppins', sans-serif; font-size:0.68rem; letter-spacing:0.16em;
@@ -54,11 +55,20 @@
   .dot-trail span:nth-child(5){ width:2px; height:2px; opacity:.4;}
 
   main{ padding:64px 0 100px; }
+  .about-grid{
+    display:grid; grid-template-columns:1.15fr 0.85fr; gap:64px; align-items:start;
+  }
+  .about-photo{ position:sticky; top:48px; }
+  .about-photo img{ width:100%; display:block; border-radius:4px; border:1px solid var(--line); }
+  @media (max-width:860px){
+    .about-grid{ grid-template-columns:1fr; }
+    .about-photo{ position:static; order:-1; max-width:340px; margin:0 auto 40px; }
+  }
   .hero-line{
     font-size:clamp(1.4rem, 3vw, 1.85rem); font-weight:400; font-style:italic;
     color:var(--brown-deep); line-height:1.5; margin-bottom:48px; max-width:520px;
   }
-  p{ margin-bottom:22px; max-width:60ch; }
+  p{ margin-bottom:22px; max-width:var(--text-max); }
   h2{
     font-size:clamp(1.25rem, 2.4vw, 1.6rem); font-weight:400; font-style:italic;
     color:var(--brown-deep); margin:56px 0 22px;
@@ -99,38 +109,45 @@
   </header>
 
   <main class="wrap">
-    <p class="eyebrow">À propos</p>
-    <div class="divider"></div>
-    <p class="hero-line">Un espace pour ralentir, respirer et prendre soin de soi.</p>
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="eyebrow">À propos</p>
+        <div class="divider"></div>
+        <p class="hero-line">Un espace pour ralentir, respirer et prendre soin de soi.</p>
 
-    <p>Je suis Gwenaëlle, praticienne en massage bien-être, et j'ai imaginé Nohea comme une véritable parenthèse dans le quotidien.</p>
+        <p>Je m'appelle Gwenaëlle, praticienne en massage bien-être depuis 8 ans, j'ai imaginé Nohea comme une véritable parenthèse dans le quotidien.</p>
 
-    <p>Après plusieurs années dans l'univers du spa et du bien-être, j'ai eu envie de créer un espace qui me ressemble&nbsp;: chaleureux, intimiste et sans pression, où l'on vient avant tout pour soi.</p>
+        <p>Après plusieurs années dans l'univers du spa et du bien-être, j'ai eu l'envie de créer un espace qui me ressemble&nbsp;: chaleureux, intimiste et sans pression, où l'on vient avant tout pour soi.</p>
 
-    <p>Chez Nohea, je ne crois pas aux soins « tout faits ». Chaque personne arrive avec ses besoins, son énergie et ses envies du moment. C'est pourquoi je privilégie une approche sur mesure, où les pressions, le rythme et les zones travaillées peuvent s'adapter à vous.</p>
+        <p>Chez Nohea, je ne crois pas aux soins « tout faits ». Chaque personne arrive avec ses besoins, son énergie et ses envies du moment. C'est pourquoi je privilégie une approche sur mesure, où les pressions, le rythme et les zones travaillées peuvent s'adapter à vous.</p>
 
-    <p>Que vous ayez besoin de relâcher les tensions, de souffler après une période chargée ou simplement de vous accorder un moment rien qu'à vous, l'objectif reste le même&nbsp;: vous permettre de ralentir et de vous reconnecter à vous-même.</p>
+        <p>Que vous ayez besoin de relâcher les tensions, de souffler après une période chargée ou simplement de vous accorder un moment rien qu'à vous, l'objectif reste le même&nbsp;: vous permettre de ralentir et de vous reconnecter à vous-même.</p>
 
-    <h2>Ma vision du massage</h2>
+        <h2>Ma vision du massage</h2>
 
-    <p>Pour moi, un massage ne se résume pas à une succession de gestes.</p>
+        <p>Pour moi, un massage ne se résume pas à une succession de gestes.</p>
 
-    <p>C'est un moment où l'on peut enfin arrêter de penser à tout, poser son téléphone, laisser la journée derrière soi et simplement respirer.</p>
+        <p>C'est un moment où l'on peut enfin arrêter de penser à tout, poser son téléphone, laisser la journée derrière soi et simplement respirer.</p>
 
-    <p>J'accorde une grande importance à l'écoute, au confort et à l'ambiance afin que chaque rendez-vous soit une expérience douce et personnelle.</p>
+        <p>J'accorde une grande importance à l'écoute, au confort et à l'ambiance afin que chaque rendez-vous soit une expérience douce et personnelle.</p>
 
-    <div class="signature">
-      Nohea, c'est votre parenthèse.<br>
-      Votre rythme.<br>
-      Votre moment.
-    </div>
+        <div class="signature">
+          Nohea, c'est votre parenthèse.<br>
+          Votre rythme.<br>
+          Votre moment.
+        </div>
 
-    <p>Je vous accueille à Ittenheim, dans un espace pensé pour vous faire sentir immédiatement bien. Entrez, respirez&hellip; et laissez-vous porter.</p>
+        <p>Je vous accueille à Ittenheim, dans un espace pensé pour vous faire sentir immédiatement bien. Entrez, respirez&hellip; et laissez-vous porter.</p>
 
-    <div class="cta">
-      <div class="dot-trail" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-      <p style="margin-top:22px;">Envie de vous accorder ce moment&nbsp;?</p>
-      <a class="btn" href="https://www.fresha.com/book-now/nohea-di6z0quc/services?lid=3180996&eid=5549410&share=true&pId=3077017" target="_blank" rel="noopener">Réserver votre massage</a>
+        <div class="cta">
+          <div class="dot-trail" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+          <p style="margin-top:22px;">Envie de vous accorder ce moment&nbsp;?</p>
+          <a class="btn" href="https://www.fresha.com/book-now/nohea-di6z0quc/services?lid=3180996&eid=5549410&share=true&pId=3077017" target="_blank" rel="noopener">Réserver votre massage</a>
+        </div>
+      </div>
+      <div class="about-photo">
+        <img src="assets/about-photo.jpg" alt="Gwenaëlle, praticienne Nohea">
+      </div>
     </div>
   </main>
 
