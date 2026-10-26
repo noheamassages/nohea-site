@@ -93,12 +93,8 @@
     text-transform:uppercase;
     color:var(--brown);
   }
-  .eyebrow.light{ color:var(--brown-light); }
+  .eyebrow.light{ color:var(--brown-light); margin-bottom:20px; }
 
-  .divider{
-    width:34px; height:1px; background:var(--line);
-    margin:22px auto;
-  }
 
   .wrap{ max-width:var(--max); margin:0 auto; padding:0 28px; }
 
@@ -230,7 +226,7 @@
   .services{ background:var(--cream-2); }
   .section-head{ text-align:center; margin-bottom:64px; }
   .section-head h2{
-    font-size:clamp(1.5rem, 2.6vw, 2.1rem); font-weight:400; font-style:italic; margin-top:14px;
+    font-size:clamp(1.5rem, 2.6vw, 2.1rem); font-weight:400; font-style:italic;
     color:var(--brown-deep);
   }
   .service-grid{
@@ -357,7 +353,6 @@
     display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;
   }
   @media (max-width:820px){ .contact-grid{ grid-template-columns:1fr; gap:48px; text-align:center; } }
-  .contact-info .eyebrow{ margin-bottom:16px; }
   .contact-info h2{
     font-size:clamp(1.5rem, 2.6vw, 2.1rem); font-weight:400; font-style:italic;
     line-height:1.4; color:var(--brown-deep); margin-bottom:28px;
@@ -387,7 +382,7 @@
   .social{ text-align:center; padding-top:80px; padding-bottom:80px; }
   .social h2{
     font-size:clamp(1.5rem, 2.6vw, 2.1rem); font-weight:400; font-style:italic;
-    color:var(--brown-deep); margin-top:8px;
+    color:var(--brown-deep);
   }
   .social-links{
     display:flex; align-items:center; justify-content:center; gap:22px;
@@ -473,7 +468,6 @@
     <section class="philosophy" id="philosophy">
       <div class="wrap reveal">
         <p class="eyebrow light">Chaque séance est unique</p>
-        <div class="divider"></div>
         <blockquote>Ici, le temps ralentit.</blockquote>
         <p>Un instant rien que pour vous, les femmes actives qui jonglent entre travail, responsabilités et vie personnelle. Prenez le temps de souffler, de déconnecter et de laisser le quotidien derrière vous.</p>
         <p>Dans une atmosphère douce et enveloppante, accordez-vous une pause bien méritée, où vous n'avez rien à faire, simplement vous laisser porter.</p>
@@ -517,7 +511,6 @@
       <div class="wrap">
         <div class="section-head reveal">
           <p class="eyebrow light">Galerie</p>
-          <h2>Un aperçu des soins</h2>
         </div>
         <div class="gallery-carousel reveal" id="galleryCarousel">
           <button class="g-arrow prev" id="galleryPrev" aria-label="Photo précédente">
@@ -549,7 +542,6 @@
     <section class="about" id="about">
       <div class="wrap reveal">
         <p class="eyebrow light">À propos</p>
-        <div class="divider"></div>
         <h2>Un espace pour ralentir, respirer et prendre soin de soi.</h2>
         <p>Je m'appelle Gwenaëlle, praticienne en massage bien-être depuis 8 ans, j'ai imaginé Nohea comme une véritable parenthèse dans le quotidien, à Ittenheim.</p>
         <a class="about-link" href="a-propos.html">Découvrir mon histoire &rarr;</a>
@@ -662,7 +654,6 @@
     <section class="social" id="social">
       <div class="wrap reveal">
         <p class="eyebrow light">Restons en contact</p>
-        <div class="divider"></div>
         <h2>Suivez Nohea</h2>
         <div class="social-links">
           <a class="social-btn" href="https://instagram.com/nohea.massages" target="_blank" rel="noopener" aria-label="Nohea sur Instagram">
