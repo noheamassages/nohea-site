@@ -789,11 +789,22 @@
       if(prevBtn) prevBtn.addEventListener('click', () => { goToSlide(current - 1); restartAuto(); });
       if(nextBtn) nextBtn.addEventListener('click', () => { goToSlide(current + 1); restartAuto(); });
 
-      let dragStartX = null, dragDeltaX = 0, dragging = false;
-      function dragStart(x){ dragging = true; dragStartX = x; dragDeltaX = 0; stopAuto(); track.style.transition = 'none'; }
-      function dragMove(x){
+      let dragStartX = null, dragStartY = null, dragDeltaX = 0, dragging = false, dragAxisLocked = null;
+      let lastTouchEnd = 0;
+      function dragStart(x, y){
+        dragging = true; dragStartX = x; dragStartY = y; dragDeltaX = 0; dragAxisLocked = null;
+        stopAuto(); track.style.transition = 'none';
+      }
+      function dragMove(x, y, evt){
         if(!dragging) return;
         dragDeltaX = x - dragStartX;
+        const deltaY = y - dragStartY;
+        if(dragAxisLocked === null){
+          if(Math.abs(dragDeltaX) < 6 && Math.abs(deltaY) < 6) return;
+          dragAxisLocked = Math.abs(dragDeltaX) > Math.abs(deltaY) ? 'x' : 'y';
+          if(dragAxisLocked === 'y'){ dragging = false; track.style.transition = ''; return; }
+        }
+        if(evt && evt.cancelable) evt.preventDefault();
         const pct = (dragDeltaX / track.clientWidth) * 100;
         track.style.transform = `translateX(calc(-${current * 100}% + ${pct}%))`;
       }
@@ -801,18 +812,22 @@
         if(!dragging) return;
         dragging = false;
         track.style.transition = '';
-        if(Math.abs(dragDeltaX) > track.clientWidth * 0.15){
+        if(dragAxisLocked === 'x' && Math.abs(dragDeltaX) > track.clientWidth * 0.15){
           goToSlide(current + (dragDeltaX < 0 ? 1 : -1));
         } else {
           goToSlide(current);
         }
         restartAuto();
       }
-      track.addEventListener('touchstart', e => dragStart(e.touches[0].clientX), { passive:true });
-      track.addEventListener('touchmove', e => dragMove(e.touches[0].clientX), { passive:true });
-      track.addEventListener('touchend', dragEnd);
-      track.addEventListener('mousedown', e => { e.preventDefault(); dragStart(e.clientX); });
-      window.addEventListener('mousemove', e => dragMove(e.clientX));
+      track.addEventListener('touchstart', e => dragStart(e.touches[0].clientX, e.touches[0].clientY), { passive:true });
+      track.addEventListener('touchmove', e => dragMove(e.touches[0].clientX, e.touches[0].clientY, e), { passive:false });
+      track.addEventListener('touchend', () => { lastTouchEnd = Date.now(); dragEnd(); });
+      track.addEventListener('touchcancel', () => { lastTouchEnd = Date.now(); dragEnd(); });
+      track.addEventListener('mousedown', e => {
+        if(Date.now() - lastTouchEnd < 700) return; // ignore ghost mouse events right after a touch
+        e.preventDefault(); dragStart(e.clientX, e.clientY);
+      });
+      window.addEventListener('mousemove', e => dragMove(e.clientX, e.clientY));
       window.addEventListener('mouseup', dragEnd);
 
       startAuto();
