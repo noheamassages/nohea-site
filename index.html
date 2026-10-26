@@ -45,6 +45,18 @@
   "sameAs": [
     "https://instagram.com/nohea.massages",
     "https://www.facebook.com/profile.php?id=61593342556318"
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5.0",
+    "reviewCount": "5"
+  },
+  "review": [
+    { "@type": "Review", "author": { "@type": "Person", "name": "Carole" }, "reviewRating": { "@type": "Rating", "ratingValue": "5" }, "reviewBody": "Accueil très sympathique, nous nous sentons de suite à l'aise. Le massage, très professionnel : vous plongez rapidement dans un état de détente absolu." },
+    { "@type": "Review", "author": { "@type": "Person", "name": "Laura" }, "reviewRating": { "@type": "Rating", "ratingValue": "5" }, "reviewBody": "Un véritable moment de douceur et de magie. Dès mon arrivée, j'ai été accueillie avec beaucoup de bienveillance. Le massage était un pur moment de lâcher-prise." },
+    { "@type": "Review", "author": { "@type": "Person", "name": "Hanane" }, "reviewRating": { "@type": "Rating", "ratingValue": "5" }, "reviewBody": "Ce massage m'a fait un bien fou. J'ai rarement été aussi détendue ! Le meilleur massage de ma vie, et je pèse mes mots." },
+    { "@type": "Review", "author": { "@type": "Person", "name": "Véronique" }, "reviewRating": { "@type": "Rating", "ratingValue": "5" }, "reviewBody": "Entre les mains expertes de Gwenaëlle, le massage Immersion prend tout son sens. Une véritable cure de jouvence." },
+    { "@type": "Review", "author": { "@type": "Person", "name": "Justine" }, "reviewRating": { "@type": "Rating", "ratingValue": "5" }, "reviewBody": "Gwenaëlle a su comprendre mon besoin et y répondre du début jusqu'à la fin du massage, c'était juste incroyable !" }
   ]
 }
 </script>
@@ -89,20 +101,6 @@
   }
 
   .wrap{ max-width:var(--max); margin:0 auto; padding:0 28px; }
-
-  /* ---------- dot trail (signature motif) ---------- */
-  .dot-trail{
-    display:flex; align-items:center; justify-content:center;
-    gap:7px; margin:0 auto;
-  }
-  .dot-trail span{
-    display:block; border-radius:50%; background:var(--brown);
-  }
-  .dot-trail span:nth-child(1){ width:9px; height:9px; }
-  .dot-trail span:nth-child(2){ width:6.5px; height:6.5px; opacity:.85;}
-  .dot-trail span:nth-child(3){ width:4.5px; height:4.5px; opacity:.7;}
-  .dot-trail span:nth-child(4){ width:3px; height:3px; opacity:.55;}
-  .dot-trail span:nth-child(5){ width:2px; height:2px; opacity:.4;}
 
   /* ---------- nav ---------- */
   header.site-nav{
@@ -368,11 +366,23 @@
 
   /* ---------- avis ---------- */
   .avis{ background:var(--cream-2); }
-  .avis-placeholder{ text-align:center; max-width:560px; margin:0 auto; }
-  .avis-placeholder .dot-trail{ margin-bottom:26px; }
-  .avis-placeholder p{
-    font-style:italic; font-size:1.05rem; line-height:1.9; color:var(--brown);
+  .avis-carousel{ max-width:620px; margin:0 auto; position:relative; }
+  .avis-viewport{ overflow:hidden; }
+  .avis-track{ display:flex; transition:transform .6s ease; touch-action:pan-y; }
+  .avis-slide{ flex:0 0 100%; padding:0 54px; text-align:center; }
+  .avis-stars{ color:var(--brown); letter-spacing:4px; margin-bottom:20px; }
+  .avis-quote{
+    font-style:italic; font-size:1.08rem; line-height:1.85; color:var(--brown);
+    max-width:500px; margin:0 auto;
   }
+  .avis-author{
+    margin-top:24px; font-family:'Poppins', sans-serif; font-size:0.66rem;
+    letter-spacing:0.12em; text-transform:uppercase; color:var(--brown-light);
+  }
+  .avis-author strong{ color:var(--brown-deep); font-weight:500; }
+  .avis-dots{ display:flex; justify-content:center; gap:10px; margin-top:28px; }
+  @media (max-width:640px){ .avis-slide{ padding:0 32px; } }
+  @media (prefers-reduced-motion: reduce){ .avis-track{ transition:none; } }
 
   /* ---------- contact ---------- */
   .contact-grid{
@@ -653,11 +663,51 @@
       <div class="wrap">
         <div class="section-head reveal">
           <p class="eyebrow light">Avis clients</p>
-          <h2>Les premiers témoignages arrivent bientôt</h2>
+          <h2>Ce qu'elles en disent</h2>
         </div>
-        <div class="avis-placeholder reveal">
-          <div class="dot-trail" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-          <p>Cette section accueillera bientôt les retours de celles et ceux qui ont poussé la porte de Nohea. En attendant, n'hésitez pas à nous écrire ou à nous suivre sur Instagram pour découvrir l'expérience Nohea.</p>
+        <div class="avis-carousel reveal" id="avisCarousel">
+          <button class="g-arrow prev" id="avisPrev" aria-label="Avis précédent">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 5l-7 7 7 7"/></svg>
+          </button>
+          <button class="g-arrow next" id="avisNext" aria-label="Avis suivant">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+          <div class="avis-viewport">
+            <div class="avis-track" id="avisTrack">
+              <div class="avis-slide">
+                <div class="avis-stars" aria-hidden="true">&starf;&starf;&starf;&starf;&starf;</div>
+                <blockquote class="avis-quote">&laquo;&nbsp;Accueil très sympathique, nous nous sentons de suite à l'aise. Le massage, très professionnel&nbsp;: vous plongez rapidement dans un état de détente absolu.&nbsp;&raquo;</blockquote>
+                <p class="avis-author"><strong>Carole</strong> — L'Immersion, 90 min</p>
+              </div>
+              <div class="avis-slide">
+                <div class="avis-stars" aria-hidden="true">&starf;&starf;&starf;&starf;&starf;</div>
+                <blockquote class="avis-quote">&laquo;&nbsp;Un véritable moment de douceur et de magie. Dès mon arrivée, j'ai été accueillie avec beaucoup de bienveillance. Le massage était un pur moment de lâcher-prise, une véritable parenthèse hors du temps.&nbsp;&raquo;</blockquote>
+                <p class="avis-author"><strong>Laura</strong> — L'Équilibre, 60 min</p>
+              </div>
+              <div class="avis-slide">
+                <div class="avis-stars" aria-hidden="true">&starf;&starf;&starf;&starf;&starf;</div>
+                <blockquote class="avis-quote">&laquo;&nbsp;Étant enceinte, maman d'un petit enfant et très fatiguée, ce massage m'a fait un bien fou. J'ai rarement été aussi détendue&nbsp;! Le meilleur massage de ma vie, et je pèse mes mots.&nbsp;&raquo;</blockquote>
+                <p class="avis-author"><strong>Hanane</strong></p>
+              </div>
+              <div class="avis-slide">
+                <div class="avis-stars" aria-hidden="true">&starf;&starf;&starf;&starf;&starf;</div>
+                <blockquote class="avis-quote">&laquo;&nbsp;Entre les mains expertes de Gwenaëlle, le massage Immersion prend tout son sens. Ce massage m'a procuré un bien-être physique et mental&hellip; incroyable&nbsp;! Une véritable cure de jouvence.&nbsp;&raquo;</blockquote>
+                <p class="avis-author"><strong>Véronique</strong> — L'Immersion, 90 min</p>
+              </div>
+              <div class="avis-slide">
+                <div class="avis-stars" aria-hidden="true">&starf;&starf;&starf;&starf;&starf;</div>
+                <blockquote class="avis-quote">&laquo;&nbsp;J'avais besoin de douceur et de me glisser dans une bulle rien que pour moi. Gwenaëlle a su y répondre du début à la fin, c'était juste incroyable&nbsp;! Ça faisait très longtemps que je n'avais plus dormi pendant un massage.&nbsp;&raquo;</blockquote>
+                <p class="avis-author"><strong>Justine</strong></p>
+              </div>
+            </div>
+          </div>
+          <div class="avis-dots" id="avisDots">
+            <button class="g-dot active" data-slide="0" aria-label="Avis 1"></button>
+            <button class="g-dot" data-slide="1" aria-label="Avis 2"></button>
+            <button class="g-dot" data-slide="2" aria-label="Avis 3"></button>
+            <button class="g-dot" data-slide="3" aria-label="Avis 4"></button>
+            <button class="g-dot" data-slide="4" aria-label="Avis 5"></button>
+          </div>
         </div>
       </div>
     </section>
@@ -711,70 +761,81 @@
     }, { threshold: 0.15 });
     revealEls.forEach(el => io.observe(el));
 
-    // gallery — small auto-advancing carousel, pauses on hover/focus,
-    // respects prefers-reduced-motion
-    const galleryCarousel = document.getElementById('galleryCarousel');
-    const galleryTrack = document.getElementById('galleryTrack');
-    const galleryDotsWrap = document.getElementById('galleryDots');
-    if(galleryCarousel && galleryTrack && galleryDotsWrap){
-      const gSlides = galleryTrack.children.length;
-      const gDots = galleryDotsWrap.querySelectorAll('.g-dot');
+    // reusable carousel: autoplay, dots, arrows, swipe/drag, pause on hover/focus
+    function initCarousel({ root, track, dotsWrap, prevBtn, nextBtn, interval }){
+      if(!root || !track || !dotsWrap) return;
+      const slides = track.children.length;
+      const dots = dotsWrap.querySelectorAll('.g-dot');
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      let gCurrent = 0, gTimer;
+      let current = 0, timer;
 
       function goToSlide(i){
-        gCurrent = (i + gSlides) % gSlides;
-        galleryTrack.style.transform = `translateX(-${gCurrent * 100}%)`;
-        gDots.forEach((d, idx) => d.classList.toggle('active', idx === gCurrent));
+        current = (i + slides) % slides;
+        track.style.transform = `translateX(-${current * 100}%)`;
+        dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
       }
-      gDots.forEach((d, idx) => d.addEventListener('click', () => { goToSlide(idx); restartAuto(); }));
+      dots.forEach((d, idx) => d.addEventListener('click', () => { goToSlide(idx); restartAuto(); }));
 
       function startAuto(){
-        if(prefersReduced) return;
-        gTimer = setInterval(() => goToSlide(gCurrent + 1), 4500);
+        if(prefersReduced || !interval) return;
+        timer = setInterval(() => goToSlide(current + 1), interval);
       }
-      function stopAuto(){ clearInterval(gTimer); }
+      function stopAuto(){ clearInterval(timer); }
       function restartAuto(){ stopAuto(); startAuto(); }
 
-      // manual arrows
-      const gPrev = document.getElementById('galleryPrev');
-      const gNext = document.getElementById('galleryNext');
-      if(gPrev) gPrev.addEventListener('click', () => { goToSlide(gCurrent - 1); restartAuto(); });
-      if(gNext) gNext.addEventListener('click', () => { goToSlide(gCurrent + 1); restartAuto(); });
+      if(prevBtn) prevBtn.addEventListener('click', () => { goToSlide(current - 1); restartAuto(); });
+      if(nextBtn) nextBtn.addEventListener('click', () => { goToSlide(current + 1); restartAuto(); });
 
-      // manual swipe / drag (touch + mouse)
-      let gDragStartX = null, gDragDeltaX = 0, gDragging = false;
-      function dragStart(x){ gDragging = true; gDragStartX = x; gDragDeltaX = 0; stopAuto(); galleryTrack.style.transition = 'none'; }
+      let dragStartX = null, dragDeltaX = 0, dragging = false;
+      function dragStart(x){ dragging = true; dragStartX = x; dragDeltaX = 0; stopAuto(); track.style.transition = 'none'; }
       function dragMove(x){
-        if(!gDragging) return;
-        gDragDeltaX = x - gDragStartX;
-        const pct = (gDragDeltaX / galleryTrack.clientWidth) * 100;
-        galleryTrack.style.transform = `translateX(calc(-${gCurrent * 100}% + ${pct}%))`;
+        if(!dragging) return;
+        dragDeltaX = x - dragStartX;
+        const pct = (dragDeltaX / track.clientWidth) * 100;
+        track.style.transform = `translateX(calc(-${current * 100}% + ${pct}%))`;
       }
       function dragEnd(){
-        if(!gDragging) return;
-        gDragging = false;
-        galleryTrack.style.transition = '';
-        if(Math.abs(gDragDeltaX) > galleryTrack.clientWidth * 0.15){
-          goToSlide(gCurrent + (gDragDeltaX < 0 ? 1 : -1));
+        if(!dragging) return;
+        dragging = false;
+        track.style.transition = '';
+        if(Math.abs(dragDeltaX) > track.clientWidth * 0.15){
+          goToSlide(current + (dragDeltaX < 0 ? 1 : -1));
         } else {
-          goToSlide(gCurrent);
+          goToSlide(current);
         }
         restartAuto();
       }
-      galleryTrack.addEventListener('touchstart', e => dragStart(e.touches[0].clientX), { passive:true });
-      galleryTrack.addEventListener('touchmove', e => dragMove(e.touches[0].clientX), { passive:true });
-      galleryTrack.addEventListener('touchend', dragEnd);
-      galleryTrack.addEventListener('mousedown', e => { e.preventDefault(); dragStart(e.clientX); });
+      track.addEventListener('touchstart', e => dragStart(e.touches[0].clientX), { passive:true });
+      track.addEventListener('touchmove', e => dragMove(e.touches[0].clientX), { passive:true });
+      track.addEventListener('touchend', dragEnd);
+      track.addEventListener('mousedown', e => { e.preventDefault(); dragStart(e.clientX); });
       window.addEventListener('mousemove', e => dragMove(e.clientX));
       window.addEventListener('mouseup', dragEnd);
 
       startAuto();
-      galleryCarousel.addEventListener('mouseenter', stopAuto);
-      galleryCarousel.addEventListener('mouseleave', startAuto);
-      galleryCarousel.addEventListener('focusin', stopAuto);
-      galleryCarousel.addEventListener('focusout', startAuto);
+      root.addEventListener('mouseenter', stopAuto);
+      root.addEventListener('mouseleave', startAuto);
+      root.addEventListener('focusin', stopAuto);
+      root.addEventListener('focusout', startAuto);
     }
+
+    initCarousel({
+      root: document.getElementById('galleryCarousel'),
+      track: document.getElementById('galleryTrack'),
+      dotsWrap: document.getElementById('galleryDots'),
+      prevBtn: document.getElementById('galleryPrev'),
+      nextBtn: document.getElementById('galleryNext'),
+      interval: 4500
+    });
+
+    initCarousel({
+      root: document.getElementById('avisCarousel'),
+      track: document.getElementById('avisTrack'),
+      dotsWrap: document.getElementById('avisDots'),
+      prevBtn: document.getElementById('avisPrev'),
+      nextBtn: document.getElementById('avisNext'),
+      interval: 6500
+    });
 
   </script>
 </body>
