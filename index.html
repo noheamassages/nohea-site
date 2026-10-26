@@ -369,7 +369,10 @@
   .avis-carousel{ max-width:620px; margin:0 auto; position:relative; }
   .avis-viewport{ overflow:hidden; }
   .avis-track{ display:flex; transition:transform .6s ease; touch-action:pan-y; }
-  .avis-slide{ flex:0 0 100%; padding:0 54px; text-align:center; }
+  .avis-slide{
+    flex:0 0 100%; padding:0 54px; text-align:center;
+    user-select:none; -webkit-user-select:none; -webkit-touch-callout:none;
+  }
   .avis-stars{ color:var(--brown); letter-spacing:4px; margin-bottom:20px; }
   .avis-quote{
     font-style:italic; font-size:1.08rem; line-height:1.85; color:var(--brown);
