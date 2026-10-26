@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nohea — Massage bien-être à Ittenheim, près de Strasbourg</title>
-<meta name="description" content="Nohea, massage bien-être sur rendez-vous à Ittenheim, à environ 15 minutes de Strasbourg. Formules L'Équilibre (60 min) et L'Immersion (90 min).">
+<meta name="description" content="Nohea, massage bien-être sur rendez-vous à Ittenheim, à environ 15 minutes de Strasbourg. Formules L'Escale (30 min), L'Équilibre (60 min) et L'Immersion (90 min).">
 <link rel="canonical" href="https://noheamassage.com/">
 <link rel="icon" type="image/png" href="assets/logo.png">
 <link rel="apple-touch-icon" href="assets/logo.png">
@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://noheamassage.com/">
 <meta property="og:site_name" content="Nohea">
 <meta property="og:title" content="Nohea — Massage bien-être à Ittenheim, près de Strasbourg">
-<meta property="og:description" content="Massage bien-être sur rendez-vous à Ittenheim, à environ 15 minutes de Strasbourg. Formules L'Équilibre (60 min) et L'Immersion (90 min).">
+<meta property="og:description" content="Massage bien-être sur rendez-vous à Ittenheim, à environ 15 minutes de Strasbourg. Formules L'Escale (30 min), L'Équilibre (60 min) et L'Immersion (90 min).">
 <meta property="og:image" content="https://noheamassage.com/assets/hero-photo.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Nohea — Massage bien-être à Ittenheim, près de Strasbourg">
@@ -27,7 +27,7 @@
   "image": "https://noheamassage.com/assets/logo.png",
   "url": "https://noheamassage.com/",
   "telephone": "+33644076435",
-  "priceRange": "65€-110€",
+  "priceRange": "49€-110€",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "11 route de Paris",
@@ -235,12 +235,12 @@
     color:var(--brown-deep);
   }
   .service-grid{
-    display:grid; grid-template-columns:repeat(2, 1fr); gap:1px;
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:1px;
     background:var(--line);
     border:1px solid var(--line);
-    max-width:720px; margin:0 auto;
+    max-width:1040px; margin:0 auto;
   }
-  @media (max-width:640px){ .service-grid{ grid-template-columns:1fr; } }
+  @media (max-width:860px){ .service-grid{ grid-template-columns:1fr; max-width:420px; } }
   .service-card{
     background:var(--cream-2);
     padding:48px 36px;
@@ -249,28 +249,6 @@
     position:relative; overflow:hidden;
   }
   .service-card:hover{ background:var(--cream); }
-  .service-card.featured{
-    background:linear-gradient(168deg, var(--cream) 0%, var(--cream-2) 65%);
-    box-shadow:inset 0 0 0 1px var(--brown-light);
-  }
-  .service-card.featured:hover{ background:linear-gradient(168deg, var(--cream) 0%, var(--cream) 100%); }
-  .offer-ribbon{
-    position:absolute; top:30px; right:-56px; width:210px;
-    text-align:center; transform:rotate(40deg);
-    background:var(--brown-deep); color:var(--cream);
-    font-family:'Poppins', sans-serif; font-size:0.6rem; letter-spacing:0.08em;
-    line-height:1.4;
-    text-transform:uppercase; padding:7px 0;
-    box-shadow:0 4px 12px -4px rgba(78,48,24,0.5);
-  }
-  @media (max-width:640px){
-    .offer-ribbon{
-      position:absolute; top:20px; right:20px; width:auto;
-      transform:none; border-radius:20px; padding:7px 14px;
-      font-size:0.56rem; line-height:1.3; text-align:center;
-      box-shadow:0 3px 10px -4px rgba(78,48,24,0.45);
-    }
-  }
   .service-card .s-name{
     font-size:1.35rem; font-weight:400; margin-top:14px;
   }
@@ -284,23 +262,8 @@
   }
   .service-card .s-price{
     font-size:2rem; margin-top:28px; color:var(--brown-deep);
-    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
   }
   .service-card .s-price sup{ font-size:1rem; margin-right:2px; }
-  .service-card .s-price .s-price-old{
-    font-size:1.2rem; color:var(--brown-light); text-decoration:line-through;
-    align-self:baseline;
-  }
-  .service-card .s-price .s-price-new{
-    align-self:baseline;
-  }
-  .service-card.featured .s-price .s-price-new{
-    font-size:2.7rem; font-weight:500; color:var(--brown-deep);
-  }
-  .launch-note{
-    font-family:'Poppins', sans-serif; font-size:0.64rem; letter-spacing:0.1em;
-    text-transform:uppercase; color:var(--brown-light); margin-top:12px;
-  }
 
   /* ---------- gallery ---------- */
   .gallery-carousel{ max-width:720px; margin:0 auto; position:relative; }
@@ -523,32 +486,29 @@
       <div class="wrap">
         <div class="section-head reveal">
           <p class="eyebrow light">Prestations</p>
-          <h2>Deux temps pour souffler</h2>
+          <h2>Trois façons de ralentir</h2>
         </div>
         <div class="service-grid reveal">
-          <div class="service-card featured">
-            <span class="offer-ribbon">Offre de<br>lancement</span>
+          <div class="service-card">
             <p class="eyebrow light">01</p>
+            <h3 class="s-name">L'Escale</h3>
+            <p class="s-duration">30 minutes</p>
+            <p class="s-desc">Le temps d'une pause, sur la zone de votre choix&nbsp;— dos, nuque, épaules, jambes. Trente minutes pour relâcher les tensions, sans bouleverser votre journée.</p>
+            <p class="s-price"><sup>&euro;</sup>49</p>
+          </div>
+          <div class="service-card">
+            <p class="eyebrow light">02</p>
             <h3 class="s-name">L'Équilibre</h3>
             <p class="s-duration">60 minutes</p>
             <p class="s-desc">Une heure, c'est le temps qu'il faut au mental pour lâcher prise. Le corps se dénoue, la respiration ralentit et les pensées cessent enfin de tourner.</p>
-            <p class="s-price">
-              <span class="s-price-old">80&nbsp;&euro;</span>
-              <span class="s-price-new"><sup>&euro;</sup>65</span>
-            </p>
-            <p class="launch-note">Offre valable jusqu'au 31 octobre 2026</p>
+            <p class="s-price"><sup>&euro;</sup>79</p>
           </div>
-          <div class="service-card featured">
-            <span class="offer-ribbon">Offre de<br>lancement</span>
-            <p class="eyebrow light">02</p>
+          <div class="service-card">
+            <p class="eyebrow light">03</p>
             <h3 class="s-name">L'Immersion</h3>
             <p class="s-duration">90 minutes</p>
             <p class="s-desc">Pour les périodes de tension accumulée. Une séance qui ne se contente pas de détendre les muscles&nbsp;: elle remet le système nerveux à zéro.</p>
-            <p class="s-price">
-              <span class="s-price-old">110&nbsp;&euro;</span>
-              <span class="s-price-new"><sup>&euro;</sup>90</span>
-            </p>
-            <p class="launch-note">Offre valable jusqu'au 31 octobre 2026</p>
+            <p class="s-price"><sup>&euro;</sup>110</p>
           </div>
         </div>
       </div>
