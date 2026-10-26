@@ -220,11 +220,11 @@
     color:var(--brown-deep);
     margin:0 auto;
   }
-  .philosophy p{
+  .philosophy p:not(.eyebrow){
     max-width:480px; margin:34px auto 0;
     font-size:1rem; line-height:1.9; color:var(--brown);
   }
-  .philosophy p + p{ margin-top:20px; }
+  .philosophy p:not(.eyebrow) + p{ margin-top:20px; }
 
   /* ---------- services ---------- */
   .services{ background:var(--cream-2); }
@@ -312,11 +312,11 @@
     font-size:clamp(1.5rem, 2.6vw, 2.1rem); font-weight:400; font-style:italic;
     color:var(--brown-deep); margin:0 auto;
   }
-  .about p{
+  .about p:not(.eyebrow){
     max-width:480px; margin:28px auto 0;
     font-size:1rem; line-height:1.9; color:var(--brown);
   }
-  .about p + p{ margin-top:20px; }
+  .about p:not(.eyebrow) + p{ margin-top:20px; }
   .about-link{
     display:inline-block; margin-top:28px;
     font-family:'Poppins', sans-serif; font-size:0.7rem; letter-spacing:0.16em;
