@@ -100,11 +100,11 @@
 
   /* ---------- nav ---------- */
   header.site-nav{
-    position:fixed; top:0; left:0; right:0; z-index:50;
+    position:fixed; top:var(--banner-h, 0px); left:0; right:0; z-index:50;
     background:rgba(254,249,245,0.86);
     backdrop-filter:blur(6px);
     border-bottom:1px solid transparent;
-    transition:border-color .4s ease, box-shadow .4s ease;
+    transition:border-color .4s ease, box-shadow .4s ease, top .3s ease;
   }
   header.site-nav.scrolled{
     border-bottom:1px solid var(--line);
@@ -167,7 +167,33 @@
   /* ---------- hero ---------- */
   .hero{
     display:flex; flex-direction:column; align-items:center;
-    text-align:center; position:relative; padding:112px 0 20px;
+    text-align:center; position:relative; padding:calc(112px + var(--banner-h, 0px)) 0 20px;
+    transition:padding-top .3s ease;
+  }
+
+  /* ---------- promo banner ---------- */
+  .promo-banner{
+    position:fixed; top:0; left:0; right:0; z-index:60;
+    background:var(--brown-deep); color:var(--cream);
+    display:flex; align-items:center; justify-content:center;
+    padding:11px 46px; text-align:center;
+  }
+  .promo-banner p{
+    font-family:'Poppins', sans-serif; font-size:0.74rem; font-weight:300;
+    letter-spacing:0.03em; line-height:1.5;
+  }
+  .promo-banner a{ color:var(--cream); text-decoration:underline; text-underline-offset:3px; }
+  .promo-banner a:hover{ color:var(--cream-2); }
+  .promo-close{
+    position:absolute; right:12px; top:50%; transform:translateY(-50%);
+    background:none; border:none; color:var(--cream); font-size:1.3rem;
+    line-height:1; cursor:pointer; padding:6px 8px; opacity:0.7;
+    transition:opacity .2s ease;
+  }
+  .promo-close:hover{ opacity:1; }
+  @media (max-width:600px){
+    .promo-banner{ padding:10px 38px; }
+    .promo-banner p{ font-size:0.66rem; }
   }
   .hero-cover{
     position:relative; width:100%; aspect-ratio:1800/1199;
@@ -424,6 +450,11 @@
 </style>
 </head>
 <body>
+
+  <div class="promo-banner" id="promoBanner">
+    <p>🎁 Offrez un moment de douceur pour Noël — <a href="https://l.fresha.com/38s3yrx97" target="_blank" rel="noopener">Bons cadeaux disponibles</a></p>
+    <button class="promo-close" id="promoClose" aria-label="Fermer la bannière">&times;</button>
+  </div>
 
   <header class="site-nav" id="siteNav">
     <div class="nav-inner">
@@ -684,6 +715,28 @@
   </footer>
 
   <script>
+    // promo banner
+    (function(){
+      const banner = document.getElementById('promoBanner');
+      const closeBtn = document.getElementById('promoClose');
+      if(!banner) return;
+      let dismissed = false;
+      try{ dismissed = localStorage.getItem('promoBannerDismissed') === '1'; }catch(e){}
+      if(dismissed){ banner.remove(); return; }
+      function setBannerHeight(){
+        document.documentElement.style.setProperty('--banner-h', banner.offsetHeight + 'px');
+      }
+      setBannerHeight();
+      window.addEventListener('resize', setBannerHeight);
+      if(closeBtn){
+        closeBtn.addEventListener('click', () => {
+          banner.remove();
+          document.documentElement.style.setProperty('--banner-h', '0px');
+          try{ localStorage.setItem('promoBannerDismissed', '1'); }catch(e){}
+        });
+      }
+    })();
+
     // nav shadow on scroll
     const nav = document.getElementById('siteNav');
     window.addEventListener('scroll', () => {
